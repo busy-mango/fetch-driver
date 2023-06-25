@@ -28,7 +28,13 @@ export type DriveOptions = RequestInit & {
 export interface DriveFunc {
   <T>(opts: DriveOptions): Promise<T>;
   <T>(api: string, data?: object, init?: RequestInit): Promise<T>;
-  // get: <T>(api: string, data?: object, init?: Omit<RequestInit, 'method'>) => Promise<T>;
+  get: <T>(api: string, data?: object, init?: Omit<RequestInit, 'method'>) => Promise<T>;
+  post: <T>(api: string, data?: object, init?: Omit<RequestInit, 'method'>) => Promise<T>;
+  head: <T>(api: string, data?: object, init?: Omit<RequestInit, 'method'>) => Promise<T>;
+  trace: <T>(api: string, data?: object, init?: Omit<RequestInit, 'method'>) => Promise<T>;
+  delete: <T>(api: string, data?: object, init?: Omit<RequestInit, 'method'>) => Promise<T>;
+  connect: <T>(api: string, data?: object, init?: Omit<RequestInit, 'method'>) => Promise<T>;
+  options: <T>(api: string, data?: object, init?: Omit<RequestInit, 'method'>) => Promise<T>;
 };
 
 // drive func first param

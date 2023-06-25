@@ -31,6 +31,27 @@ export default class FetchDriver {
 
   constructor(middleware: DriveMiddleware[]) {
     this.middleware = middleware;
+    this.drive.get = async<T>(...args: Parameters<typeof over>) => {
+      return (await this.request<T>({ ...over(...args), method: 'GET' })).body;
+    }
+    this.drive.post = async<T>(...args: Parameters<typeof over>) => {
+      return (await this.request<T>({ ...over(...args), method: 'POST' })).body;
+    }
+    this.drive.head = async<T>(...args: Parameters<typeof over>) => {
+      return (await this.request<T>({ ...over(...args), method: 'POST' })).body;
+    }
+    this.drive.trace = async<T>(...args: Parameters<typeof over>) => {
+      return (await this.request<T>({ ...over(...args), method: 'POST' })).body;
+    }
+    this.drive.delete = async<T>(...args: Parameters<typeof over>) => {
+      return (await this.request<T>({ ...over(...args), method: 'POST' })).body;
+    }
+    this.drive.connect = async<T>(...args: Parameters<typeof over>) => {
+      return (await this.request<T>({ ...over(...args), method: 'POST' })).body;
+    }
+    this.drive.options = async<T>(...args: Parameters<typeof over>) => {
+      return (await this.request<T>({ ...over(...args), method: 'POST' })).body;
+    }
   }
 
   public use = (middleware: DriveMiddleware) => {
@@ -85,9 +106,7 @@ export default class FetchDriver {
     return context as FetchContext<T>;
   }
 
-  public drive: DriveFunc = async<T>(
-    ...args: Parameters<typeof over>
-  ) => {
+  public drive = (async<T>(...args: Parameters<typeof over>) => {
     return (await this.request<T>(over(...args))).body;
-  }
+  }) as DriveFunc
 }
