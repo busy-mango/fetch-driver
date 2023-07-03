@@ -3,7 +3,12 @@
  * @description fetch core
  */
 
-import { isNil, isNonEmptyString, isObject } from '@busymango/is-esm';
+import {
+  isNil,
+  isNumeric,
+  isNonEmptyString,
+  isObject,
+} from '@busymango/is-esm';
 
 import type {
   DriveFunc,
@@ -20,7 +25,9 @@ import { getBodyType } from './utils';
 export function over(
   first: FirstParam,
   data?: object,
-  init?: RequestInit
+  init?: RequestInit & {
+    timeout?: number;
+  }
 ): DriveOptions {
   if (isObject(first)) return first;
   return { api: first, data, ...init };
@@ -38,19 +45,19 @@ export default class FetchDriver {
       return (await this.request<T>({ ...over(...args), method: 'POST' })).body;
     }
     this.drive.head = async<T>(...args: Parameters<typeof over>) => {
-      return (await this.request<T>({ ...over(...args), method: 'POST' })).body;
+      return (await this.request<T>({ ...over(...args), method: 'HEAD' })).body;
     }
     this.drive.trace = async<T>(...args: Parameters<typeof over>) => {
-      return (await this.request<T>({ ...over(...args), method: 'POST' })).body;
+      return (await this.request<T>({ ...over(...args), method: 'TRACE' })).body;
     }
     this.drive.delete = async<T>(...args: Parameters<typeof over>) => {
-      return (await this.request<T>({ ...over(...args), method: 'POST' })).body;
+      return (await this.request<T>({ ...over(...args), method: 'DELETE' })).body;
     }
     this.drive.connect = async<T>(...args: Parameters<typeof over>) => {
-      return (await this.request<T>({ ...over(...args), method: 'POST' })).body;
+      return (await this.request<T>({ ...over(...args), method: 'CONNECT' })).body;
     }
     this.drive.options = async<T>(...args: Parameters<typeof over>) => {
-      return (await this.request<T>({ ...over(...args), method: 'POST' })).body;
+      return (await this.request<T>({ ...over(...args), method: 'OPTIONS' })).body;
     }
   }
 
@@ -72,6 +79,14 @@ export default class FetchDriver {
       context.initBody();
       context.initMethod();
       const { options } = context;
+      const { timeout } = options;
+
+      if (AbortController && isNumeric(timeout)) {
+        const controller = new AbortController();
+        context.options.signal = controller.signal;
+        setTimeout(() => controller.abort(), timeout);
+      }
+
       context.response = await fetch(api, options);
       context.responseType = getBodyType(context.response);
 
