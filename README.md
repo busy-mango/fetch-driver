@@ -214,6 +214,27 @@ export const general: DriveMiddleware = async (context, next) => {
 }
 ```
 
+Define error middleware
+
+```ts
+import { DriveMiddleware, FetchError } from '@busymango/fetch-driver'
+import { catchMsg } from '@utils';
+
+export const error: DriveMiddleware = async (context, next) => {
+  await next().catch((error) => {
+    if (error instanceof DOMException) {
+      if (error.name === 'AbortError') {
+        const params = {
+          code: -1,
+          context,
+        };
+        throw new FetchError('fetch timeout', params)
+      }
+    }
+  });
+}
+```
+
 Use general middleware
 
 ```ts
@@ -231,12 +252,18 @@ export { drive };
 ### Abort fetch
 
 ```ts
-// TODO
+drive('/user/12345', {
+  firstName: 'Fred',
+  lastName: 'Flintstone'
+}, {
+  // set 8S timeout
+  timeout: 8000
+});
 ```
 
 ## Promises
 
-axios depends on a native ES6 Promise implementation to be [supported](https://caniuse.com/promises).
+fetch-driver depends on a native ES6 Promise implementation to be [supported](https://caniuse.com/promises).
 If your environment doesn't support ES6 Promises, you can [polyfill](https://github.com/jakearchibald/es6-promise).
 
 ## License
