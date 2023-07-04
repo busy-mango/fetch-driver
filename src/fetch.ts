@@ -66,7 +66,7 @@ export default class FetchDriver {
   }
 
   public request = async <T>(options: DriveOptions) => {
-    const { api, data, ...init } = options;
+    const { api, data, timeout, ...init } = options;
 
     const context = new DriveContext<T>(api, data, init);
 
@@ -79,7 +79,6 @@ export default class FetchDriver {
       context.initBody();
       context.initMethod();
       const { options } = context;
-      const { timeout } = options;
 
       if (AbortController && isNumeric(timeout)) {
         const controller = new AbortController();

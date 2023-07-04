@@ -16,7 +16,6 @@ export type DriveMiddleware<T = unknown> = (context: DriveContext<T>, next: Next
 // drive context options
 export type DriveContextOptions = {
   headers: Headers;
-  timeout?: number;
 } & Omit<RequestInit, 'headers'>;
 
 // call the drive by DriveOptions
