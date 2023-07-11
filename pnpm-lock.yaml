@@ -7,8 +7,8 @@ dependencies:
 
 devDependencies:
   '@busymango/is-esm':
-    specifier: ^0.0.5
-    version: 0.0.5
+    specifier: ^0.0.6
+    version: 0.0.6
   '@types/mime':
     specifier: ^3.0.1
     version: 3.0.1
@@ -21,8 +21,8 @@ devDependencies:
 
 packages:
 
-  /@busymango/is-esm@0.0.5:
-    resolution: {integrity: sha512-0oLW18K1bwfzM1DuX93Np/hWEnHDPayLCIwa55IJFGOZdt792T7bwmtTXZNfn9Untp3V+aM0I1ehlGyid7vcgw==}
+  /@busymango/is-esm@0.0.6:
+    resolution: {integrity: sha512-1KzrN59znAx7gCRiHz2TS5rg5VlEewJkaGKmpq3gFpdQgP4gcMw3e9hf/Dq3UBU6DETrnrn1jYU1/f9agPY8Nw==}
     dev: true
 
   /@esbuild/android-arm64@0.16.17:
