@@ -1,8 +1,5 @@
-import { downloader, fields2search, type DriveMiddleware, src2name } from '../../index';
-
-/**
- * 如果是附件请求则直接下载附件
- */
+import type { DriveMiddleware } from '../../index';
+import { downloader, fields2search, src2name } from '../../index';
 
 export const disposition: DriveMiddleware = async (context, next) => {
   await next();

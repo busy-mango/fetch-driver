@@ -54,6 +54,21 @@
 --- | --- | --- | --- | --- |
  \>= 65 ✔ | Latest ✔ | Latest ✔ | Latest ✔ | Latest ✔ |
 
+## Why onion model
+ 
+The basic principle of the Onion Model is to process HTTP requests through a series of middleware. Each middleware can perform specific operations before or after the request reaches the target handler. When a request is sent to the server, it passes through each middleware in sequence before being returned to the client.
+
+By adding, removing, or modifying middleware, the request processing flow can be easily adjusted. This allows developers to customize request handling based on specific requirements. 
+
+The design of middleware allows them to be reused in different applications or projects. This saves development time and resources, and promotes code maintainability and scalability. 
+
+The structure of the Onion Model makes it easier to test each middleware individually. This enables quick identification and resolution of issues, improving code quality and reliability. 
+
+By adding logging and monitoring capabilities in appropriate middleware, it becomes possible to track, analyze, and monitor requests and responses. This helps diagnose issues, provide performance optimization, and enhance user experience. 
+
+In summary, the Onion Model offers a structured and customizable approach to handling HTTP requests. Its benefits include flexibility, scalability, and code reusability, allowing developers to better organize and manage the request processing flow.
+
+
 ## Installing
 
 ### Package manager
@@ -199,39 +214,35 @@ import { DriveMiddleware, FetchError } from '@busymango/fetch-driver'
 import { catchMsg } from '@utils';
 
 export const general: DriveMiddleware = async (context, next) => {
-  await next();
+  try {
+    await next();
+  } catch (error) {
+    if (error instanceof DOMException) {
+      if (error.name === 'AbortError') {
+        const params = { code: -1, context };
+        throw new FetchError('Fetch timeout', params)
+      }
+    }
+  }
 
   const { response, body } = context;
-  
-  if (response && !response?.ok) {
-    const res: unknown = body ?? await response.text();
 
+  if (!response) {
     throw new FetchError(
-      catchMsg(res) ?? 'NetWork Error',
+      'NetWork Error',
+      { context, code: 500 },
+    )
+  }
+
+  const { status, ok } = response;
+  const res: unknown = body ?? await response.text();
+  
+  if (ok !== true) {
+    throw new FetchError(
+      catchMsg(res),
       { context },
     );
   }
-}
-```
-
-Define error middleware
-
-```ts
-import { DriveMiddleware, FetchError } from '@busymango/fetch-driver'
-import { catchMsg } from '@utils';
-
-export const error: DriveMiddleware = async (context, next) => {
-  await next().catch((error) => {
-    if (error instanceof DOMException) {
-      if (error.name === 'AbortError') {
-        const params = {
-          code: -1,
-          context,
-        };
-        throw new FetchError('fetch timeout', params)
-      }
-    }
-  });
 }
 ```
 
@@ -252,12 +263,17 @@ export { drive };
 ### Abort fetch
 
 ```ts
-drive('/user/12345', {
+const controller = new AbortController();
+
+setTimeout(() => {
+  controller.abort();
+}, 8000);
+
+await drive('/user/12345', {
   firstName: 'Fred',
   lastName: 'Flintstone'
 }, {
-  // set 8S timeout
-  timeout: 8000
+  signal: controller.signal,
 });
 ```
 
