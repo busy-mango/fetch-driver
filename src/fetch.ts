@@ -80,7 +80,7 @@ export default class FetchDriver {
       context.initMethod();
       const { options } = context;
 
-      if (AbortController && isNumeric(timeout)) {
+      if (window.AbortController && isNumeric(timeout)) {
         const controller = new AbortController();
         context.options.signal = controller.signal;
         setTimeout(() => controller.abort(), timeout);
