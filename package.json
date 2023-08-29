@@ -24,7 +24,7 @@
     "@busymango/is-esm": "^0.0.7",
     "@types/mime": "^3.0.1",
     "typescript": "^5.0.4",
-    "vite": "^4.0.4",
+    "vite": "^4.0.5",
     "vitest": "^0.34.1"
   },
   "dependencies": {
