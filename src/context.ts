@@ -39,8 +39,8 @@ export default class DriveContext<T = unknown> {
     };
   }
 
-  // 初始化API
-  public initAPI = () => {
+  // 初始化请求地址
+  private initAPI = () => {
     const { api, data } = this;
     if (isURLSearchParams(data)) {
       const arr = api.split('?');
@@ -51,14 +51,15 @@ export default class DriveContext<T = unknown> {
     }
   } 
 
-  public initBody = () => {
+  // 初始化请求参数(请求体)
+  private initBody = () => {
     const { body, headers } = this.options;
     
     if (isNil(body)) {
       const { data } = this;
       if (isNonRawBodyInit(data)) {
         this.options.body = data;
-      } else if (isObject(data)) {
+      } else if (isObject(data) && !isURLSearchParams(data)) {
         this.options.body = JSON.stringify(data);
         if (!headers.has("Content-Type")) {
           headers.set("Content-Type", "application/json");
@@ -67,12 +68,18 @@ export default class DriveContext<T = unknown> {
     }
   }
 
-  public initMethod = () => {
+  // 初始化请求方法
+  private initMethod = () => {
     if (!this.options.method) {
       const { body } = this.options;
-      this.options.method = (
-        isNil(body) || isURLSearchParams(body)
-      ) ? 'GET' : 'POST';
+      this.options.method = isNil(body) ? 'GET' : 'POST';
     }
+  }
+
+  // 初始化上下文
+  public init = () => {
+    this.initAPI();
+    this.initBody();
+    this.initMethod();
   }
 }

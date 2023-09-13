@@ -52,7 +52,7 @@
 
 ![Chrome](https://raw.githubusercontent.com/alrra/browser-logos/main/src/chrome/chrome_48x48.png) | ![Firefox](https://raw.githubusercontent.com/alrra/browser-logos/main/src/firefox/firefox_48x48.png) | ![Safari](https://raw.githubusercontent.com/alrra/browser-logos/main/src/safari/safari_48x48.png) | ![Opera](https://raw.githubusercontent.com/alrra/browser-logos/main/src/opera/opera_48x48.png) | ![Edge](https://raw.githubusercontent.com/alrra/browser-logos/main/src/edge/edge_48x48.png) |
 --- | --- | --- | --- | --- |
- \>= 65 ✔ | Latest ✔ | Latest ✔ | Latest ✔ | Latest ✔ |
+ \>= 66 ✔ | >= 57 ✔ | >= 12.1 ✔ | >= 53 ✔ | >= 16 ✔ |
 
 ## Why onion model
  
@@ -253,9 +253,7 @@ import FetchDriver from '@busymango/fetch-driver';
 
 import { general } from './middlewares';
 
-const { drive } = new FetchDriver([
-  general,
-]);
+const { drive } = new FetchDriver([general]);
 
 export { drive };
 ```
@@ -263,17 +261,9 @@ export { drive };
 ### Abort fetch
 
 ```ts
-const controller = new AbortController();
-
-setTimeout(() => {
-  controller.abort();
-}, 8000);
-
-await drive('/user/12345', {
-  firstName: 'Fred',
-  lastName: 'Flintstone'
-}, {
-  signal: controller.signal,
+await drive({
+  api: '/user/12345',
+  timeout: 8000,
 });
 ```
 

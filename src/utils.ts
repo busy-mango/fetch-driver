@@ -6,20 +6,24 @@
 import mime from 'mime';
 
 import {
+  isBlob,
   isObject,
-  isNonEmptyString,
+  isArrayBuffer,
+  isArrayBufferLike,
   isArrayBufferView,
+  isNonEmptyString,
 } from '@busymango/is-esm';
 
 export function isNonRawBodyInit(source: unknown): source is Exclude<
   BodyInit, string | URLSearchParams
 > {
   if (!isObject(source)) return false;
-  return source instanceof Blob
-    || source instanceof FormData
-    || source instanceof ArrayBuffer
-    || source instanceof ReadableStream
+  return isBlob(source)
+    || isArrayBuffer(source)
+    || isArrayBufferLike(source)
     || isArrayBufferView(source)
+    || source instanceof FormData
+    || source instanceof ReadableStream
   ;
 };
 

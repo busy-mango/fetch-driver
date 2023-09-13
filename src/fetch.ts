@@ -8,6 +8,7 @@ import {
   isNumeric,
   isNonEmptyString,
   isObject,
+  isFunction,
 } from '@busymango/is-esm';
 
 import type {
@@ -36,8 +37,9 @@ export function over(
 export default class FetchDriver {
   private middleware: DriveMiddleware[];
 
-  constructor(middleware: DriveMiddleware[]) {
+  constructor(middleware: DriveMiddleware[] = []) {
     this.middleware = middleware;
+
     this.drive.get = async<T>(...args: Parameters<typeof over>) => {
       return (await this.request<T>({ ...over(...args), method: 'GET' })).body;
     }
@@ -75,12 +77,11 @@ export default class FetchDriver {
     );
 
     await composed(context, async () => {
-      context.initAPI();
-      context.initBody();
-      context.initMethod();
+      context.init();
+
       const { options } = context;
 
-      if (window.AbortController && isNumeric(timeout)) {
+      if (isFunction(AbortController) && isNumeric(timeout)) {
         const controller = new AbortController();
         context.options.signal = controller.signal;
         setTimeout(() => controller.abort(), timeout);
