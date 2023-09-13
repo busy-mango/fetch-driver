@@ -28,13 +28,27 @@ export type DriveOptions = RequestInit & {
 // drive func overloading
 export interface DriveFunc {
   <T>(opts: DriveOptions): Promise<T>;
-  <T>(api: string, data?: object, init?: RequestInit): Promise<T>;
+  <T>(
+    /** the fetch USVString */
+    api: string,
+    /** the fetch body */
+    data?: object,
+    /** the fetch request init */
+    init?: RequestInit,
+  ): Promise<T>;
+  /** GET Method Fetch */
   get: <T>(api: string, data?: object, init?: Omit<RequestInit, 'method'>) => Promise<T>;
+  /** POST Method Fetch */
   post: <T>(api: string, data?: object, init?: Omit<RequestInit, 'method'>) => Promise<T>;
+  /** HEAD Method Fetch */
   head: <T>(api: string, data?: object, init?: Omit<RequestInit, 'method'>) => Promise<T>;
+  /** TRACE Method Fetch */
   trace: <T>(api: string, data?: object, init?: Omit<RequestInit, 'method'>) => Promise<T>;
+  /** DELETE Method Fetch */
   delete: <T>(api: string, data?: object, init?: Omit<RequestInit, 'method'>) => Promise<T>;
+  /** CONNECT Method Fetch */
   connect: <T>(api: string, data?: object, init?: Omit<RequestInit, 'method'>) => Promise<T>;
+  /** OPTIONS Method Fetch */
   options: <T>(api: string, data?: object, init?: Omit<RequestInit, 'method'>) => Promise<T>;
 };
 
