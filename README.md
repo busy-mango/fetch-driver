@@ -10,7 +10,7 @@
 
 [![npm version](https://img.shields.io/npm/v/@busymango/fetch-driver.svg?style=flat-square)](https://www.npmjs.org/package/@busymango/fetch-driver)
 [![install size](https://img.shields.io/badge/dynamic/json?url=https://packagephobia.com/v2/api.json?p=@busymango/fetch-driver&query=$.install.pretty&label=install%20size&style=flat-square)](https://packagephobia.now.sh/result?p=@busymango/fetch-driver)
-[![npm bundle size](https://img.shields.io/bundlephobia/minzip/@busymango/fetch-driver?style=flat-square)](https://bundlephobia.com/package/@busymango/fetch-driver@latest)
+![npm package minimized gzipped size](https://img.shields.io/bundlejs/size/%40busymango%2Ffetch-driver)
 [![npm downloads](https://img.shields.io/npm/dm/@busymango/fetch-driver.svg?style=flat-square)](https://npm-stat.com/charts.html?package=@busymango/fetch-driver)
 <!-- [![gitter chat](https://img.shields.io/gitter/room/mzabriskie/axios.svg?style=flat-square)](https://gitter.im/mzabriskie/axios) -->
 <!-- [![code helpers](https://www.codetriage.com/axios/axios/badges/users.svg)](https://www.codetriage.com/axios/axios) -->
