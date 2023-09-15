@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import {
   isNonRawBodyInit,
-  fields2search,
+  toParams,
   src2name,
 } from '../src/utils';
 
@@ -85,7 +85,7 @@ describe('src2name', () => {
 describe('fields2search', () => {
   it('test', () => {
     const string = ' charset=UTF-8';
-    const source = fields2search([string]);
+    const source = toParams([string]);
     expect(source.get('charset')).toEqual('UTF-8');
   })
 })

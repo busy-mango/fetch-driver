@@ -1,6 +1,8 @@
 import { describe, it, expect } from 'vitest';
-import FetchDriver from '../src/fetch';
+
 import { isUndefined } from '@busymango/is-esm';
+
+import FetchDriver from '../src/fetch';
 
 describe('external encoding', () => {
   const { drive, request } = new FetchDriver([]);
@@ -18,10 +20,6 @@ describe('external encoding', () => {
 			const buffer = await response.arrayBuffer();
 			expect(buffer.byteLength).toStrictEqual(35);
 			expect(buffer).to.be.an.instanceOf(ArrayBuffer);
-
-      const res = await drive('data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=');
-      console.log('res', res);
-
 		});
 
 		it('should accept data uri with specified charset', async () => {
@@ -32,7 +30,7 @@ describe('external encoding', () => {
       const { status, headers } = response;
 			expect(status).toStrictEqual(200);
 			expect(headers.get('Content-Type')).toStrictEqual(
-        'text/plain;charset=UTF-8,page=21',
+        'text/plain;charset=UTF-8;page=21',
       );
 
 			expect(await response.text()).toStrictEqual('the data:1234,5678');

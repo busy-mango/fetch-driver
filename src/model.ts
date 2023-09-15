@@ -18,16 +18,40 @@ export type DriveContextOptions = {
   headers: Headers;
 } & Omit<RequestInit, 'headers'>;
 
+export interface ReceivedFunc<T> {
+  (percentage: number, context: DriveContext<T>): void;
+}
+
+export interface BodyParseFunc<T> {
+  (
+    response: Response,
+    context: DriveContext<T>,
+    extra?: {
+      onReceived?: ReceivedFunc<T>;
+    },
+  ): Promise<void>;
+}
+
+export type ExtraOptions<T> = {
+  /** abort fetch before timeout */
+  timeout?: number;
+  /** use extra middleware in current fetch */
+  use?: DriveMiddleware<T>[];
+  /** progress callback */
+  onReceived?: ReceivedFunc<T>;
+  /** body parse */
+  parse?: BodyParseFunc<T>;
+}
+
 // call the drive by DriveOptions
-export type DriveOptions = RequestInit & {
+export type DriveOptions<T> = RequestInit & ExtraOptions<T> & {
   api: string;
   data?: object;
-  timeout?: number;
 };
 
 // drive func overloading
 export interface DriveFunc {
-  <T>(opts: DriveOptions): Promise<T>;
+  <T>(opts: DriveOptions<T>): Promise<T>;
   <T>(
     /** the fetch USVString */
     api: string,
@@ -53,7 +77,7 @@ export interface DriveFunc {
 };
 
 // drive func first param
-export type FirstParam = string | DriveOptions;
+export type FirstParam<T> = string | DriveOptions<T>;
 
 // drive context after fetch over
 export type FetchContext<T> = Required<DriveContext<T>>;

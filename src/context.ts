@@ -2,25 +2,52 @@
  * @author mango
  * @description fetch context
  */
+import { getExtension } from 'mime';
 
-import { isNil, isObject, isURLSearchParams } from '@busymango/is-esm';
+import {
+  isNil,
+  isNumeric,
+  isNonEmptyString, 
+  isFunction,
+  isObject,
+  isString,
+  isURLSearchParams,
+} from '@busymango/is-esm';
 
 import type { DriveContextOptions } from './model';
-import { isNonRawBodyInit } from "./utils";
+import { toParams, isNonRawBodyInit } from "./utils";
 
 export default class DriveContext<T = unknown> {
+  /** the fetch src */
   public api: string;
 
+  /** the fetch init options */
   public options: DriveContextOptions;
 
+  /** the fetch response body (parse val) */
   public body?: T;
 
+  /** the fetch request body */
   public data?: object;
 
+  /** the fetch response */
   public response?: Response;
 
-  public responseType?: string | null;
+  /** the response type */
+  public responseType?: string;
 
+  /** the response charset */
+  public responseCharset?: string;
+
+  /** is response received done */
+  public receivedDone?: boolean;
+
+  /** the response received bytes */
+  public receivedBytes?: number;
+
+  /** current time response received chunks */
+  public receivedChunk?: Uint8Array;
+  
   constructor (
     api: string,
     data?: object,
@@ -39,7 +66,7 @@ export default class DriveContext<T = unknown> {
     };
   }
 
-  // 初始化请求地址
+  /** init request src */
   private initAPI = () => {
     const { api, data } = this;
     if (isURLSearchParams(data)) {
@@ -51,7 +78,7 @@ export default class DriveContext<T = unknown> {
     }
   } 
 
-  // 初始化请求参数(请求体)
+  /** init request body */
   private initBody = () => {
     const { body, headers } = this.options;
     
@@ -68,7 +95,7 @@ export default class DriveContext<T = unknown> {
     }
   }
 
-  // 初始化请求方法
+  /** init method */
   private initMethod = () => {
     if (!this.options.method) {
       const { body } = this.options;
@@ -76,10 +103,45 @@ export default class DriveContext<T = unknown> {
     }
   }
 
-  // 初始化上下文
+  /** init context */
   public init = () => {
     this.initAPI();
     this.initBody();
     this.initMethod();
+  }
+
+  /** use `AbortController` abort cur fetch when timeout */
+  public initAbort = (timeout?: number) => {
+    if (isFunction(AbortController) && isNumeric(timeout)) {
+      const controller = new AbortController();
+
+      this.options.signal = controller.signal;
+      setTimeout(() => controller.abort(), timeout);
+    }
+  }
+
+  /** get Content-Type & charset by response header before response */
+  public decodeHeader = () => {
+    const { response } = this;
+    const { headers } = response!;
+    const type = headers.get('Content-Type');
+
+    if (isNonEmptyString(type)) {
+      const fields = type.split(';');
+
+      // get response content type
+      for (const iterator of fields) {
+        const { responseType } = this;
+        const extension = getExtension(iterator);
+        if (isString(extension) && !isString(responseType)) {
+          this.responseType = extension;
+        };
+      }
+
+      // get response charset
+      const params = toParams(fields);
+      const charset = params.get('charset');
+      if (isString(charset)) this.responseCharset = charset;
+    }
   }
 }

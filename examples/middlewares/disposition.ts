@@ -1,5 +1,5 @@
 import type { DriveMiddleware } from '../../index';
-import { downloader, fields2search, src2name } from '../../index';
+import { downloader, toParams, src2name } from '../../index';
 
 export const disposition: DriveMiddleware = async (context, next) => {
   await next();
@@ -15,7 +15,7 @@ export const disposition: DriveMiddleware = async (context, next) => {
       const [mode, ...fields] = disposition?.trim()?.split(';') ?? [];
     
       if (mode.trim() === 'attachment') {
-        const params = fields2search(fields);
+        const params = toParams(fields);
         context.body = await response.blob();
         const name = params.get('filename') ?? src2name(api);
         const src = URL.createObjectURL(context.body as Blob);

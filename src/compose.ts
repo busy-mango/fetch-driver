@@ -12,10 +12,6 @@ export function compose<T>(
     const closure = { offset: -1 };
 
     function dispatch(index: number): Promise<void> {
-      if (index <= closure.offset) {
-        throw new Error('next() called mutiple times');
-      }
-
       closure.offset = index;
 
       if (index === middlewares.length) {

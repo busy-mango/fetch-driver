@@ -3,36 +3,31 @@
  * @description fetch core
  */
 
-import {
-  isNil,
-  isNumeric,
-  isNonEmptyString,
-  isObject,
-  isFunction,
-} from '@busymango/is-esm';
+import { isObject } from '@busymango/is-esm';
 
 import type {
   DriveFunc,
   DriveOptions,
+  DriveMiddleware,
   FirstParam,
   FetchContext,
   Middleware,
-  DriveMiddleware,
+  ExtraOptions,
 } from './model';
 import { compose } from './compose';
 import DriveContext from './context';
-import { getBodyType } from './utils';
+import { driveBody } from './utils';
 
-export function over(
-  first: FirstParam,
+function over<T>(
+  first: FirstParam<T>,
   data?: object,
-  init?: RequestInit & {
-    timeout?: number;
-  }
-): DriveOptions {
+  init?: RequestInit & ExtraOptions<T>,
+): DriveOptions<T> {
   if (isObject(first)) return first;
   return { api: first, data, ...init };
 }
+
+type DriveParams<T> = Parameters<typeof over<T>>;
 
 export default class FetchDriver {
   private middleware: DriveMiddleware[];
@@ -40,88 +35,65 @@ export default class FetchDriver {
   constructor(middleware: DriveMiddleware[] = []) {
     this.middleware = middleware;
 
-    this.drive.get = async<T>(...args: Parameters<typeof over>) => {
-      return (await this.request<T>({ ...over(...args), method: 'GET' })).body;
+    this.drive.get = async<T>(...args: DriveParams<T>) => {
+      return (await this.request({ ...over(...args), method: 'GET' })).body;
     }
-    this.drive.post = async<T>(...args: Parameters<typeof over>) => {
-      return (await this.request<T>({ ...over(...args), method: 'POST' })).body;
+    this.drive.post = async<T>(...args: DriveParams<T>) => {
+      return (await this.request({ ...over(...args), method: 'POST' })).body;
     }
-    this.drive.head = async<T>(...args: Parameters<typeof over>) => {
-      return (await this.request<T>({ ...over(...args), method: 'HEAD' })).body;
+    this.drive.head = async<T>(...args: DriveParams<T>) => {
+      return (await this.request({ ...over(...args), method: 'HEAD' })).body;
     }
-    this.drive.trace = async<T>(...args: Parameters<typeof over>) => {
-      return (await this.request<T>({ ...over(...args), method: 'TRACE' })).body;
+    this.drive.trace = async<T>(...args: DriveParams<T>) => {
+      return (await this.request({ ...over(...args), method: 'TRACE' })).body;
     }
-    this.drive.delete = async<T>(...args: Parameters<typeof over>) => {
-      return (await this.request<T>({ ...over(...args), method: 'DELETE' })).body;
+    this.drive.delete = async<T>(...args: DriveParams<T>) => {
+      return (await this.request({ ...over(...args), method: 'DELETE' })).body;
     }
-    this.drive.connect = async<T>(...args: Parameters<typeof over>) => {
-      return (await this.request<T>({ ...over(...args), method: 'CONNECT' })).body;
+    this.drive.connect = async<T>(...args: DriveParams<T>) => {
+      return (await this.request({ ...over(...args), method: 'CONNECT' })).body;
     }
-    this.drive.options = async<T>(...args: Parameters<typeof over>) => {
-      return (await this.request<T>({ ...over(...args), method: 'OPTIONS' })).body;
+    this.drive.options = async<T>(...args: DriveParams<T>) => {
+      return (await this.request({ ...over(...args), method: 'OPTIONS' })).body;
     }
   }
 
-  public use = (middleware: DriveMiddleware) => {
-    this.middleware.push(middleware);
-  }
-
-  public request = async <T>(options: DriveOptions) => {
-    const { api, data, timeout, ...init } = options;
-
+  public request = async<T>({
+    api,
+    use,
+    data,
+    parse,
+    timeout,
+    onReceived,
+    ...init
+  }: DriveOptions<T>) => {
     const context = new DriveContext<T>(api, data, init);
 
     const composed = compose<DriveContext>(
-      this.middleware as Middleware<DriveContext>[]
+      use as Middleware<DriveContext>[] ?? this.middleware,
     );
 
     await composed(context, async () => {
       context.init();
+      context.initAbort(timeout);
 
-      const { options } = context;
+      const { api, options } = context;
+      const response = await fetch(api, options);
 
-      if (isFunction(AbortController) && isNumeric(timeout)) {
-        const controller = new AbortController();
-        context.options.signal = controller.signal;
-        setTimeout(() => controller.abort(), timeout);
-      }
+      context.response = response;
+      context.decodeHeader();
 
-      context.response = await fetch(api, options);
-      context.responseType = getBodyType(context.response);
-
-      const { response } = context;
-      if (response.ok) {
-        const { responseType: type } = context;
-        
-        if (isNonEmptyString(type)) {
-          switch (type) {
-            case 'json':
-              context.body = (await response.json()) as T;
-              break;
-            case 'css':
-            case 'xml':
-            case 'html':
-            case 'plain':
-            case 'richtext':
-            case 'javascript':
-              context.body = (await response.text()) as T;
-              break;
-            default:
-              break;
-          }
-        }
-      }
+      await (parse ?? driveBody)(
+        response,
+        context,
+        { onReceived },
+      );
     });
-
-    if (isNil(context.response)) {
-      throw new Error('fetch-driver get empty response')
-    }
 
     return context as FetchContext<T>;
   }
 
-  public drive = (async<T>(...args: Parameters<typeof over>) => {
-    return (await this.request<T>(over(...args))).body;
-  }) as DriveFunc
+  public drive = (async<T>(...args: DriveParams<T>) => {
+    return (await this.request(over(...args))).body;
+  }) as DriveFunc;
 }

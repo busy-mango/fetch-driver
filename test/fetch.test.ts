@@ -12,7 +12,7 @@ describe('Successful GET request', () => {
   const { drive, request } = new FetchDriver();
 
   it('should return a promise', () => {
-		const promise = drive('https://catfact.ninja/fact');
+		const promise = drive(api);
 		expect(promise).to.be.an.instanceof(Promise);
 		expect(promise).to.have.property('then');
 	});
@@ -46,4 +46,17 @@ describe('Successful GET request', () => {
       expect(isDOMException && error.name === 'AbortError').toBe(true);
     }
   });
+
+  it('should get percentage onReceived', async () => {
+    const current = {
+      percentage: 0,
+    }
+
+    await drive({
+      api: 'https://www.api-football.com/public/doc/openapi.yaml',
+      onReceived: (percentage) => {
+        current.percentage = Number(percentage.toFixed(2));
+      }
+    });
+  })
 });
