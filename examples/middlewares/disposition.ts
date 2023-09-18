@@ -1,7 +1,7 @@
-import type { DriveMiddleware } from '../../index';
-import { downloader, toParams, src2name } from '../../index';
+import type { DriveMiddleware } from '@busymango/fetch-driver';
+import { downloader, toParams, src2name } from '@busymango/fetch-driver';
 
-export const disposition: DriveMiddleware = async (context, next) => {
+const disposition: DriveMiddleware = async (context, next) => {
   await next();
 
   const { response } = context;
@@ -16,13 +16,17 @@ export const disposition: DriveMiddleware = async (context, next) => {
     
       if (mode.trim() === 'attachment') {
         const params = toParams(fields);
+
         context.body = await response.blob();
+
         const name = params.get('filename') ?? src2name(api);
         const src = URL.createObjectURL(context.body as Blob);
+
         downloader(src, name);
-        
         return URL.revokeObjectURL(src);
       }
     }
   }
-}
+};
+
+export default disposition;

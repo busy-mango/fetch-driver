@@ -1,0 +1,31 @@
+lockfileVersion: '6.0'
+
+dependencies:
+  '@busymango/fetch-driver':
+    specifier: ^0.1.10
+    version: 0.1.10(@busymango/is-esm@0.1.1)(mime@3.0.0)
+  '@busymango/is-esm':
+    specifier: ^0.1.1
+    version: 0.1.1
+
+packages:
+
+  /@busymango/fetch-driver@0.1.10(@busymango/is-esm@0.1.1)(mime@3.0.0):
+    resolution: {integrity: sha512-1kVDXO4o+6esULAboZAKc2mAxgV6b7Wq0L1xSmWGhJFzvjZj5q76oWIe/lVmuBvvIf23xou9ma/EDbgstCl1wQ==}
+    peerDependencies:
+      '@busymango/is-esm': '>=0.1.0'
+      mime: '>=3.0.0'
+    dependencies:
+      '@busymango/is-esm': 0.1.1
+      mime: 3.0.0
+    dev: false
+
+  /@busymango/is-esm@0.1.1:
+    resolution: {integrity: sha512-816gKUjouRJNPJ81KtjP8mCjNT/n6FDXwPVE1gn6h2qwNJeiHdHDWj1JnGr/Noc5M3b/b+nTqpahq36ATRkzag==}
+    dev: false
+
+  /mime@3.0.0:
+    resolution: {integrity: sha512-jSCU7/VB1loIWBZe14aEYHU/+1UMEHoaO7qxCOVJOw9GgH72VAWppxNcjU+x9a2k3GSIBXNKxXQFqRvvZ7vr3A==}
+    engines: {node: '>=10.0.0'}
+    hasBin: true
+    dev: false
