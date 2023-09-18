@@ -2,7 +2,7 @@ import { defineConfig } from 'vite';
 
 export default defineConfig({
   test: {
-    testTimeout: 20000,
+    testTimeout: 12000,
   },
   build: {
     target: ['es2016', 'chrome65'],
