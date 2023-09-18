@@ -2,7 +2,7 @@
  * @author mango
  * @description fetch type define
  */
-import DriveContext from "./context";
+import DriveContext from './context';
 
 // middleware next func
 export type Next = () => Promise<void>;

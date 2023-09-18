@@ -38,21 +38,27 @@ export default class FetchDriver {
     this.drive.get = async<T>(...args: DriveParams<T>) => {
       return (await this.request({ ...over(...args), method: 'GET' })).body;
     }
+
     this.drive.post = async<T>(...args: DriveParams<T>) => {
       return (await this.request({ ...over(...args), method: 'POST' })).body;
     }
+
     this.drive.head = async<T>(...args: DriveParams<T>) => {
       return (await this.request({ ...over(...args), method: 'HEAD' })).body;
     }
+
     this.drive.trace = async<T>(...args: DriveParams<T>) => {
       return (await this.request({ ...over(...args), method: 'TRACE' })).body;
     }
+
     this.drive.delete = async<T>(...args: DriveParams<T>) => {
       return (await this.request({ ...over(...args), method: 'DELETE' })).body;
     }
+
     this.drive.connect = async<T>(...args: DriveParams<T>) => {
       return (await this.request({ ...over(...args), method: 'CONNECT' })).body;
     }
+    
     this.drive.options = async<T>(...args: DriveParams<T>) => {
       return (await this.request({ ...over(...args), method: 'OPTIONS' })).body;
     }

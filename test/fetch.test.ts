@@ -1,6 +1,8 @@
 import { describe, it, expect } from 'vitest';
-import FetchDriver from '../src/fetch';
+
 import { isURLSearchParams } from '@busymango/is-esm';
+
+import FetchDriver from '../src/fetch';
 
 type CatFactModel = {
   fact?: string;
@@ -32,12 +34,13 @@ describe('Successful GET request', () => {
     expect(ctx.responseType).toStrictEqual('json');
 	});
 
-  it('Mock fetch', async () => {
-    const res = await drive<CatFactModel>(api);
+  it('should parse json data', async () => {
+    const data = new URLSearchParams({ test: 'test' });
+    const res = await drive<CatFactModel>(api, data);
     expect(res.fact?.length).toBe(res.length);
   });
 
-  it('Abort fetch', async () => {
+  it('should abort fetch when timeout', async () => {
     try {
       await drive<CatFactModel>({ api, timeout: 0 });
       throw new Error('Abort not executed');
@@ -60,5 +63,5 @@ describe('Successful GET request', () => {
         current.percentage = Number(cur.toFixed(2));
       }
     });
-  })
+  });
 });

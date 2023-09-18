@@ -15,7 +15,7 @@ import {
 } from '@busymango/is-esm';
 
 import type { DriveContextOptions } from './model';
-import { toParams, isNonRawBodyInit } from "./utils";
+import { toParams, isNonRawBodyInit } from './utils';
 
 export default class DriveContext<T = unknown> {
   /** the fetch src */
@@ -88,8 +88,8 @@ export default class DriveContext<T = unknown> {
         this.options.body = data;
       } else if (isObject(data) && !isURLSearchParams(data)) {
         this.options.body = JSON.stringify(data);
-        if (!headers.has("Content-Type")) {
-          headers.set("Content-Type", "application/json");
+        if (!headers.has('Content-Type')) {
+          headers.set('Content-Type', 'application/json');
         }
       }
     }

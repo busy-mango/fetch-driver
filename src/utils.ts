@@ -57,7 +57,7 @@ export function src2name (src: string): string {
 
 export function toParams(fields: string[]): URLSearchParams {
   return new URLSearchParams(
-    fields.filter(e => e.includes("=")).map(e => e.trim()).join('&'),
+    fields.filter(e => e.includes('=')).map(e => e.trim()).join('&'),
   );
 };
 

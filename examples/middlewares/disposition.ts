@@ -10,8 +10,8 @@ export const disposition: DriveMiddleware = async (context, next) => {
     const { api } = context;
     const { headers } = response;
     // 如果是附件请求则直接下载附件
-    if (headers.has("Content-Disposition")) {
-      const disposition = headers.get("Content-Disposition");
+    if (headers.has('Content-Disposition')) {
+      const disposition = headers.get('Content-Disposition');
       const [mode, ...fields] = disposition?.trim()?.split(';') ?? [];
     
       if (mode.trim() === 'attachment') {
