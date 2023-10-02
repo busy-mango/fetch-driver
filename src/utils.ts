@@ -2,10 +2,11 @@
  * @author mango
  * @description fetch type define
  */
+
 import {
   isBlob,
   isObject,
-  isNumeric,
+  isFinite,
   isArrayBuffer,
   isArrayBufferLike,
   isArrayBufferView,
@@ -76,7 +77,7 @@ export async function driveBody<T>(
 
   if (ok) {
     const size = Number(headers.get('Content-Length'));
-    const isShard = body && isNumeric(size) && onReceived;
+    const isShard = body && isFinite(size) && onReceived;
 
     if (isShard) {
       context.receivedBytes = 0;

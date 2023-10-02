@@ -6,7 +6,7 @@ import { getExtension } from 'mime';
 
 import {
   isNil,
-  isNumeric,
+  isFinite,
   isNonEmptyString, 
   isFunction,
   isObject,
@@ -112,7 +112,7 @@ export default class DriveContext<T = unknown> {
 
   /** use `AbortController` abort cur fetch when timeout */
   public initAbort = (timeout?: number) => {
-    if (isFunction(AbortController) && isNumeric(timeout)) {
+    if (isFunction(AbortController) && isFinite(timeout)) {
       const controller = new AbortController();
 
       this.options.signal = controller.signal;
