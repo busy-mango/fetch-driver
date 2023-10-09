@@ -2,6 +2,7 @@
   "name": "@busymango/fetch-driver",
   "version": "0.1.11",
   "type": "module",
+  "description": "fetch with middlewares for the browser",
   "files": [
     "dist",
     "src/*.d.ts",
@@ -14,6 +15,19 @@
     "types": "./index.d.ts",
     "import": "./dist/index.js",
     "require": "./dist/index.umd.cjs"
+  },
+  "author": "mango",
+  "keywords": [
+    "http",
+    "fetch",
+    "promise"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/busy-mango/fetch-driver"
+  },
+  "bugs": {
+    "url": "https://github.com/busy-mango/fetch-driver/issues"
   },
   "scripts": {
     "dev": "vite",
