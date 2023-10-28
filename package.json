@@ -1,6 +1,6 @@
 {
   "name": "@busymango/fetch-driver",
-  "version": "0.1.11",
+  "version": "0.1.12",
   "type": "module",
   "description": "fetch with middlewares for the browser",
   "files": [
@@ -18,9 +18,16 @@
   },
   "author": "mango",
   "keywords": [
+    "json",
     "http",
+    "async",
     "fetch",
-    "promise"
+    "promise",
+    "request",
+    "browser",
+    "fetch-json",
+    "javascript",
+    "typescript"
   ],
   "repository": {
     "type": "git",
@@ -33,7 +40,8 @@
     "dev": "vite",
     "test": "vitest",
     "build": "tsc && vite build",
-    "coverage": "vitest run --coverage"
+    "coverage": "vitest run --coverage",
+    "publish:pre": "pnpm build && pnpm coverage"
   },
   "devDependencies": {
     "@types/mime": "^3.0.1",
@@ -44,10 +52,10 @@
   },
   "dependencies": {
     "@busymango/is-esm": "^0.1.1",
-    "mime": "^3.0.0"
+    "mime": "4.0.0-beta.1"
   },
   "peerDependencies": {
     "@busymango/is-esm": ">=0.1.1",
-    "mime": ">=3.0.0"
+    "mime": ">3.0.0"
   }
 }

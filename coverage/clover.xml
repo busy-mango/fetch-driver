@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1696259599261" clover="3.2.0">
-  <project timestamp="1696259599261" name="All files">
+<coverage generated="1698507712349" clover="3.2.0">
+  <project timestamp="1698507712349" name="All files">
     <metrics statements="403" coveredstatements="375" conditionals="68" coveredconditionals="57" methods="28" coveredmethods="20" elements="499" coveredelements="452" complexity="0" loc="403" ncloc="403" packages="1" files="4" classes="4"/>
     <file name="compose.ts" path="/Users/mangosetsuna/Workspace/busymango/fetch-driver/src/compose.ts">
       <metrics statements="30" coveredstatements="30" conditionals="5" coveredconditionals="5" methods="2" coveredmethods="2"/>
@@ -384,21 +384,21 @@
       <line num="87" count="1" type="stmt"/>
       <line num="88" count="1" type="stmt"/>
       <line num="89" count="1" type="cond" truecount="1" falsecount="0"/>
-      <line num="90" count="66" type="stmt"/>
-      <line num="91" count="66" type="stmt"/>
-      <line num="92" count="66" type="cond" truecount="1" falsecount="0"/>
-      <line num="93" count="65" type="stmt"/>
-      <line num="94" count="65" type="stmt"/>
-      <line num="95" count="65" type="stmt"/>
-      <line num="96" count="65" type="stmt"/>
-      <line num="97" count="65" type="stmt"/>
-      <line num="98" count="65" type="stmt"/>
-      <line num="99" count="66" type="stmt"/>
-      <line num="100" count="66" type="stmt"/>
-      <line num="101" count="66" type="stmt"/>
-      <line num="102" count="66" type="cond" truecount="0" falsecount="1"/>
-      <line num="103" count="66" type="stmt"/>
-      <line num="104" count="66" type="stmt"/>
+      <line num="90" count="93" type="stmt"/>
+      <line num="91" count="93" type="stmt"/>
+      <line num="92" count="93" type="cond" truecount="1" falsecount="0"/>
+      <line num="93" count="92" type="stmt"/>
+      <line num="94" count="92" type="stmt"/>
+      <line num="95" count="92" type="stmt"/>
+      <line num="96" count="92" type="stmt"/>
+      <line num="97" count="92" type="stmt"/>
+      <line num="98" count="92" type="stmt"/>
+      <line num="99" count="93" type="stmt"/>
+      <line num="100" count="93" type="stmt"/>
+      <line num="101" count="93" type="stmt"/>
+      <line num="102" count="93" type="cond" truecount="0" falsecount="1"/>
+      <line num="103" count="93" type="stmt"/>
+      <line num="104" count="93" type="stmt"/>
       <line num="105" count="1" type="stmt"/>
       <line num="106" count="1" type="stmt"/>
       <line num="107" count="1" type="stmt"/>

@@ -2,7 +2,7 @@
  * @author mango
  * @description fetch context
  */
-import { getExtension } from 'mime';
+import mime from 'mime/lite';
 
 import {
   isNil,
@@ -132,7 +132,7 @@ export default class DriveContext<T = unknown> {
       // get response content type
       for (const iterator of fields) {
         const { responseType } = this;
-        const extension = getExtension(iterator);
+        const extension = mime.getExtension(iterator);
         if (isString(extension) && !isString(responseType)) {
           this.responseType = extension;
         };
