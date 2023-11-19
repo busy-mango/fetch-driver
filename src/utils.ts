@@ -10,6 +10,7 @@ import {
   isArrayBuffer,
   isArrayBufferLike,
   isArrayBufferView,
+  isNonEmptyString,
 } from '@busymango/is-esm';
 
 import DriveContext from './context';
@@ -103,12 +104,25 @@ export async function driveBody<T>(
         onReceived(100 * receivedBytes / denominator, context);
       }
 
-      const code = decoder.decode(context.receivedChunk);
+      if (isNonEmptyString(
+        headers.get('Content-Disposition')
+      )) {
+        context.body = new Blob(
+          [context.receivedChunk],
+          { type: 'application/octet-stream' },
+        ) as T;
+      }
 
       if (responseType === 'json') {
-        context.body = JSON.parse(code) as T;
+        context.body = JSON.parse(
+          decoder.decode(context.receivedChunk)
+        ) as T;
       }
     } else {
+      if (responseType === 'txt') {
+        context.body = (await response.text()) as T;
+      }
+
       if (responseType === 'json') {
         context.body = (await response.json()) as T;
       }
