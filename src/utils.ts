@@ -10,7 +10,6 @@ import {
   isArrayBuffer,
   isArrayBufferLike,
   isArrayBufferView,
-  isNonEmptyString,
   isString,
 } from '@busymango/is-esm';
 

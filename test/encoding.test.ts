@@ -23,34 +23,45 @@ describe('external encoding', () => {
 		});
 
 		it('should accept data uri with specified charset', async () => {
-			const { response } = await request({
-        api: 'data:text/plain;charset=UTF-8;page=21,the%20data:1234,5678'
+			const { body, response } = await request<string>({
+        api: 'data:text/plain;charset=UTF-8;page=21,the%20data:1234,5678',
+				parse: async (response, context) => {
+					context.body = await response.text();
+				}
       });
 
       const { status, headers } = response;
+
 			expect(status).toStrictEqual(200);
+
 			expect(headers.get('Content-Type')).toStrictEqual(
         'text/plain;charset=UTF-8;page=21',
       );
 
-			expect(await response.text()).toStrictEqual('the data:1234,5678');
+			expect(body).toStrictEqual('the data:1234,5678');
 		});
 
 		it('should accept data uri of plain text', async () => {
-      const { response } = await request({ api: 'data:,Hello%20World!' })
+      const { body, response } = await request({
+				api: 'data:,Hello%20World!',
+				parse: async (response, context) => {
+					context.body = await response.text();
+				}
+			})
 
       const { status, headers } = response;
+
       expect(status).toStrictEqual(200);
+
 			expect(headers.get('Content-Type')).toStrictEqual(
         'text/plain;charset=US-ASCII',
       );
 
-      expect(await response.text()).toStrictEqual('Hello World!');
-		});
+      expect(body).toStrictEqual('Hello World!');
 
-		it('should get undefined data uri', async () => {
-      const res = await drive('data:,Hello%20World!');
-      expect(isUndefined(res)).toBeTruthy();
+			const result = await drive('data:,Hello%20World!');
+
+      expect(result).toStrictEqual('Hello World!');
 		});
 	});
 });
