@@ -11,6 +11,7 @@ import {
   isArrayBufferLike,
   isArrayBufferView,
   isNonEmptyString,
+  isString,
 } from '@busymango/is-esm';
 
 import DriveContext from './context';
@@ -79,7 +80,9 @@ export async function driveBody<T>(
   if (ok) {
     const size = Number(headers.get('Content-Length'));
     const isShard = body && isFinite(size) && onReceived;
-
+    const disposition = headers.get('Content-Disposition');
+    const isAttchment = isString(disposition) && disposition.includes('attachment');
+    
     if (isShard) {
       context.receivedBytes = 0;
       context.receivedChunk = new Uint8Array(0);
@@ -104,9 +107,7 @@ export async function driveBody<T>(
         onReceived(100 * receivedBytes / denominator, context);
       }
 
-      if (isNonEmptyString(
-        headers.get('Content-Disposition')
-      )) {
+      if (isAttchment) {
         context.body = new Blob(
           [context.receivedChunk],
           { type: 'application/octet-stream' },
@@ -119,6 +120,10 @@ export async function driveBody<T>(
         ) as T;
       }
     } else {
+      if (isAttchment) {
+        context.body = (await response.blob()) as T;
+      }
+
       if (responseType === 'txt') {
         context.body = (await response.text()) as T;
       }

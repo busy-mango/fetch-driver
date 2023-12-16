@@ -1,5 +1,6 @@
 import type { DriveMiddleware } from '@busymango/fetch-driver';
 import { downloader, toParams, src2name } from '@busymango/fetch-driver';
+import { isBlob } from '@busymango/is-esm';
 
 const disposition: DriveMiddleware = async (context, next) => {
   await next();
@@ -7,23 +8,19 @@ const disposition: DriveMiddleware = async (context, next) => {
   const { response } = context;
 
   if (response?.ok) {
-    const { api } = context;
+    const { api, body } = context;
     const { headers } = response;
     // 如果是附件请求则直接下载附件
     if (headers.has('Content-Disposition')) {
       const disposition = headers.get('Content-Disposition');
       const [mode, ...fields] = disposition?.trim()?.split(';') ?? [];
     
-      if (mode.trim() === 'attachment') {
+      if (mode.trim() === 'attachment' && isBlob(body)) {
         const params = toParams(fields);
-
-        context.body = await response.blob();
-
-        const name = params.get('filename') ?? src2name(api);
-        const src = URL.createObjectURL(context.body as Blob);
-
-        downloader(src, name);
-        return URL.revokeObjectURL(src);
+        const name = params.get('filename');
+        const src = URL.createObjectURL(body);
+        downloader(src, name ?? src2name(api));
+        URL.revokeObjectURL(src);
       }
     }
   }

@@ -275,3 +275,32 @@ If your environment doesn't support ES6 Promises, you can [polyfill](https://git
 ## License
 
 [MIT](LICENSE)
+
+
+TODO:
+
+use
+
+utils.test
+timeout.test
+Onion.test
+middleware.test
+mini size
+
+是 fetch 的一个小包装器，旨在简化执行网络请求和处理响应的方式。
+🪶 Small - core is less than 2KB g-zipped
+🪶 小 - 内核小于 2KB g-zipped
+💡 Intuitive - lean API, handles errors, headers and (de)serialization
+💡 直观 - 精益 API，处理错误、标头和（反）序列化
+🧊 Immutable - every call creates a cloned instance that can then be reused safely
+🧊 不可变 - 每次调用都会创建一个克隆的实例，然后可以安全地重用该实例
+🔌 Modular - plug addons to add new features, and middlewares to intercept requests
+🔌 模块化 - 插入插件以添加新功能，以及中间件以拦截请求
+🧩 Isomorphic - compatible with modern browsers, Node.js 14+ and Deno
+🧩 同构 - 与现代浏览器、Node.js 14+ 和 Deno 兼容
+🦺 Type safe - strongly typed, written in TypeScript
+🦺 类型安全 - 强类型，用 TypeScript 编写
+✅ Proven - fully covered by unit tests and widely used
+✅ 经过验证 - 完全覆盖在单元测试中并被广泛使用
+💓 Maintained - alive and well for many years
+💓 维护 - 活得很好很多年
