@@ -111,28 +111,33 @@ export async function driveBody<T>(
           [context.receivedChunk],
           { type: 'application/octet-stream' },
         ) as T;
+        return;
       }
 
       if (responseType === 'json') {
-        context.body = JSON.parse(
-          decoder.decode(context.receivedChunk)
-        ) as T;
+        const json = decoder.decode(context.receivedChunk);
+        context.body = JSON.parse(json) as T;
+        return;
       }
     } else {
       if (isAttchment) {
         context.body = (await response.blob()) as T;
+        return;
       }
 
       if (responseType === 'txt') {
         context.body = (await response.text()) as T;
+        return;
       }
 
       if (responseType === 'json') {
         context.body = (await response.json()) as T;
+        return;
       }
 
       if (isRawTextBody(responseType ?? undefined)) {
         context.body = (await response.text()) as T;
+        return;
       }
     }
   }

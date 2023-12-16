@@ -1,6 +1,6 @@
 {
   "name": "@busymango/fetch-driver",
-  "version": "0.1.14",
+  "version": "0.1.15",
   "type": "module",
   "description": "fetch with middlewares for the browser",
   "files": [
