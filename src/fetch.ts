@@ -29,39 +29,20 @@ function over<T>(
 
 type DriveParams<T> = Parameters<typeof over<T>>;
 
+const methods = ['GET', 'PUT', 'POST', 'HEAD', 'TRACE', 'DELETE', 'CONNECT', 'OPTIONS'] as const;
+
 export default class FetchDriver {
   private middleware: DriveMiddleware[];
 
   constructor(middleware: DriveMiddleware[] = []) {
     this.middleware = middleware;
 
-    this.drive.get = async<T>(...args: DriveParams<T>) => {
-      return (await this.request({ ...over(...args), method: 'GET' })).body;
-    }
-
-    this.drive.post = async<T>(...args: DriveParams<T>) => {
-      return (await this.request({ ...over(...args), method: 'POST' })).body;
-    }
-
-    this.drive.head = async<T>(...args: DriveParams<T>) => {
-      return (await this.request({ ...over(...args), method: 'HEAD' })).body;
-    }
-
-    this.drive.trace = async<T>(...args: DriveParams<T>) => {
-      return (await this.request({ ...over(...args), method: 'TRACE' })).body;
-    }
-
-    this.drive.delete = async<T>(...args: DriveParams<T>) => {
-      return (await this.request({ ...over(...args), method: 'DELETE' })).body;
-    }
-
-    this.drive.connect = async<T>(...args: DriveParams<T>) => {
-      return (await this.request({ ...over(...args), method: 'CONNECT' })).body;
-    }
-    
-    this.drive.options = async<T>(...args: DriveParams<T>) => {
-      return (await this.request({ ...over(...args), method: 'OPTIONS' })).body;
-    }
+    methods.forEach((method) => {
+      const name = method.toLowerCase() as Lowercase<typeof method>;
+      this.drive[name] = async<T>(...args: DriveParams<T>) => (
+        await this.request({ ...over(...args), method })
+      ).body
+    });
   }
 
   public request = async<T>({

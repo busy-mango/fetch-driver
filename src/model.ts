@@ -49,8 +49,14 @@ export type DriveOptions<T> = RequestInit & ExtraOptions<T> & {
   data?: object;
 };
 
+export interface DriveMethodFunc {
+  <T>(api: string, data?: object, init?: Omit<RequestInit, 'method'>): Promise<T>
+}
+
+export type DriveFuncAttrs = Record<'get' | 'put' | 'post' | 'head' | 'trace' | 'delete' | 'connect' | 'options', DriveMethodFunc>;
+
 // drive func overloading
-export interface DriveFunc {
+export interface DriveFunc extends DriveFuncAttrs {
   <T>(opts: DriveOptions<T>): Promise<T>;
   <T>(
     /** the fetch USVString */
@@ -60,20 +66,6 @@ export interface DriveFunc {
     /** the fetch request init */
     init?: RequestInit,
   ): Promise<T>;
-  /** GET Method Fetch */
-  get: <T>(api: string, data?: object, init?: Omit<RequestInit, 'method'>) => Promise<T>;
-  /** POST Method Fetch */
-  post: <T>(api: string, data?: object, init?: Omit<RequestInit, 'method'>) => Promise<T>;
-  /** HEAD Method Fetch */
-  head: <T>(api: string, data?: object, init?: Omit<RequestInit, 'method'>) => Promise<T>;
-  /** TRACE Method Fetch */
-  trace: <T>(api: string, data?: object, init?: Omit<RequestInit, 'method'>) => Promise<T>;
-  /** DELETE Method Fetch */
-  delete: <T>(api: string, data?: object, init?: Omit<RequestInit, 'method'>) => Promise<T>;
-  /** CONNECT Method Fetch */
-  connect: <T>(api: string, data?: object, init?: Omit<RequestInit, 'method'>) => Promise<T>;
-  /** OPTIONS Method Fetch */
-  options: <T>(api: string, data?: object, init?: Omit<RequestInit, 'method'>) => Promise<T>;
 };
 
 // drive func first param

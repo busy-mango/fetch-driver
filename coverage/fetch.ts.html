@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">86.66% </span>
+                <span class="strong">97.67% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>91/105</span>
+                <span class='fraction'>84/86</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>13/13</span>
+                <span class='fraction'>14/14</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">41.66% </span>
+                <span class="strong">83.33% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>5/12</span>
+                <span class='fraction'>5/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">86.66% </span>
+                <span class="strong">97.67% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>91/105</span>
+                <span class='fraction'>84/86</span>
             </div>
         
             
@@ -149,26 +149,7 @@
 <a name='L84'></a><a href='#L84'>84</a>
 <a name='L85'></a><a href='#L85'>85</a>
 <a name='L86'></a><a href='#L86'>86</a>
-<a name='L87'></a><a href='#L87'>87</a>
-<a name='L88'></a><a href='#L88'>88</a>
-<a name='L89'></a><a href='#L89'>89</a>
-<a name='L90'></a><a href='#L90'>90</a>
-<a name='L91'></a><a href='#L91'>91</a>
-<a name='L92'></a><a href='#L92'>92</a>
-<a name='L93'></a><a href='#L93'>93</a>
-<a name='L94'></a><a href='#L94'>94</a>
-<a name='L95'></a><a href='#L95'>95</a>
-<a name='L96'></a><a href='#L96'>96</a>
-<a name='L97'></a><a href='#L97'>97</a>
-<a name='L98'></a><a href='#L98'>98</a>
-<a name='L99'></a><a href='#L99'>99</a>
-<a name='L100'></a><a href='#L100'>100</a>
-<a name='L101'></a><a href='#L101'>101</a>
-<a name='L102'></a><a href='#L102'>102</a>
-<a name='L103'></a><a href='#L103'>103</a>
-<a name='L104'></a><a href='#L104'>104</a>
-<a name='L105'></a><a href='#L105'>105</a>
-<a name='L106'></a><a href='#L106'>106</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L87'></a><a href='#L87'>87</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -199,6 +180,8 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
@@ -206,32 +189,11 @@
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">16x</span>
+<span class="cline-any cline-yes">16x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
@@ -304,39 +266,20 @@ function over&lt;T&gt;(
 &nbsp;
 type DriveParams&lt;T&gt; = Parameters&lt;typeof over&lt;T&gt;&gt;;
 &nbsp;
+const methods = ['GET', 'PUT', 'POST', 'HEAD', 'TRACE', 'DELETE', 'CONNECT', 'OPTIONS'] as const;
+&nbsp;
 export default class FetchDriver {
   private middleware: DriveMiddleware[];
 &nbsp;
   constructor(middleware: DriveMiddleware[] = []) {
     this.middleware = middleware;
 &nbsp;
-    this.drive.get = <span class="fstat-no" title="function not covered" >async&lt;T&gt;(...args: DriveParams&lt;T&gt;) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >      return (await this.request({ ...over(...args), method: 'GET' })).body;</span>
-<span class="cstat-no" title="statement not covered" >    }</span>
-&nbsp;
-    this.drive.post = <span class="fstat-no" title="function not covered" >async&lt;T&gt;(...args: DriveParams&lt;T&gt;) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >      return (await this.request({ ...over(...args), method: 'POST' })).body;</span>
-<span class="cstat-no" title="statement not covered" >    }</span>
-&nbsp;
-    this.drive.head = <span class="fstat-no" title="function not covered" >async&lt;T&gt;(...args: DriveParams&lt;T&gt;) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >      return (await this.request({ ...over(...args), method: 'HEAD' })).body;</span>
-<span class="cstat-no" title="statement not covered" >    }</span>
-&nbsp;
-    this.drive.trace = <span class="fstat-no" title="function not covered" >async&lt;T&gt;(...args: DriveParams&lt;T&gt;) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >      return (await this.request({ ...over(...args), method: 'TRACE' })).body;</span>
-<span class="cstat-no" title="statement not covered" >    }</span>
-&nbsp;
-    this.drive.delete = <span class="fstat-no" title="function not covered" >async&lt;T&gt;(...args: DriveParams&lt;T&gt;) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >      return (await this.request({ ...over(...args), method: 'DELETE' })).body;</span>
-<span class="cstat-no" title="statement not covered" >    }</span>
-&nbsp;
-    this.drive.connect = <span class="fstat-no" title="function not covered" >async&lt;T&gt;(...args: DriveParams&lt;T&gt;) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >      return (await this.request({ ...over(...args), method: 'CONNECT' })).body;</span>
-<span class="cstat-no" title="statement not covered" >    }</span>
-    
-    this.drive.options = <span class="fstat-no" title="function not covered" >async&lt;T&gt;(...args: DriveParams&lt;T&gt;) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >      return (await this.request({ ...over(...args), method: 'OPTIONS' })).body;</span>
-<span class="cstat-no" title="statement not covered" >    }</span>
+    methods.forEach((method) =&gt; {
+      const name = method.toLowerCase() as Lowercase&lt;typeof method&gt;;
+      this.drive[name] = <span class="fstat-no" title="function not covered" >async&lt;T&gt;(...args: DriveParams&lt;T&gt;) =&gt; (</span>
+<span class="cstat-no" title="statement not covered" >        await this.request({ ...over(...args), method })</span>
+<span class="cstat-no" title="statement not covered" >      ).body</span>
+    });
   }
 &nbsp;
   public request = async&lt;T&gt;({
@@ -385,7 +328,7 @@ export default class FetchDriver {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-12-16T02:01:00.367Z
+                at 2024-02-10T08:30:16.942Z
             </div>
         <script src="prettify.js"></script>
         <script>

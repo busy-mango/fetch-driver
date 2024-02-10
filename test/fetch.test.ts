@@ -21,7 +21,7 @@ describe('Successful GET request', () => {
 
   it('should resolve into response', async () => {
     const data = new URLSearchParams({ test: 'test' });
-
+    
 		const ctx = await request<CatFactModel>({ api, data });
     
 		expect(ctx.api).toStrictEqual(`${api}?${data.toString()}`);
