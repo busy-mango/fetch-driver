@@ -11,6 +11,9 @@ importers:
       '@busymango/is-esm':
         specifier: ^0.2.2
         version: 0.2.2
+      '@busymango/utils':
+        specifier: 0.2.2
+        version: 0.2.2(@busymango/is-esm@0.2.2)
       mime:
         specifier: 4.0.3
         version: 4.0.3
@@ -62,6 +65,11 @@ packages:
 
   '@busymango/is-esm@0.2.2':
     resolution: {integrity: sha512-p9TXIFSzczjDCqNItvpckgWuo1krpCUiKJT8qK6b4BzwS5gcM5QRhtNir0V13EEQicyxJXEPk6ZHqziqkjnxjg==}
+
+  '@busymango/utils@0.2.2':
+    resolution: {integrity: sha512-O+p2tRStX0dzUXI6tdYk1qjTkb+I0CDQsPXcwo74z0kcB2B0cE/rLXFzgRPZw1zNhFGbrsqNiPc1yLzFT4kS8A==}
+    peerDependencies:
+      '@busymango/is-esm': '>=0.1.7'
 
   '@esbuild/aix-ppc64@0.21.5':
     resolution: {integrity: sha512-1SDgH6ZSPTlggy1yI6+Dbkiz8xzpHJEVAlF/AM1tHPLsf5STom9rwtjE4hKAF20FfXXNTFqEYXyJNWh1GiZedQ==}
@@ -355,6 +363,9 @@ packages:
 
   '@types/estree@1.0.5':
     resolution: {integrity: sha512-/kYRxGDLWzHOB7q+wtSUQlFrtcdUccpfy+X+9iMBpHK8QLLhx2wIPYuS5DYtR9Wa/YlZAbIovy7qVdB1Aq6Lyw==}
+
+  '@ungap/structured-clone@1.2.0':
+    resolution: {integrity: sha512-zuVdFrMJiuCDQUMCzQaD6KL28MjnqqN8XnAqiEq9PNm/hCPTSGfrXCOfwj1ow4LFb/tNymJPwsNbVePc1xFqrQ==}
 
   '@vitest/coverage-v8@1.6.0':
     resolution: {integrity: sha512-KvapcbMY/8GYIG0rlwwOKCVNRc0OL20rrhFkg/CHNzncV03TE2XWvO5w9uZYoxNiMEBacAJt3unSOiZ7svePew==}
@@ -815,6 +826,11 @@ snapshots:
 
   '@busymango/is-esm@0.2.2': {}
 
+  '@busymango/utils@0.2.2(@busymango/is-esm@0.2.2)':
+    dependencies:
+      '@busymango/is-esm': 0.2.2
+      '@ungap/structured-clone': 1.2.0
+
   '@esbuild/aix-ppc64@0.21.5':
     optional: true
 
@@ -987,6 +1003,8 @@ snapshots:
   '@sinclair/typebox@0.27.8': {}
 
   '@types/estree@1.0.5': {}
+
+  '@ungap/structured-clone@1.2.0': {}
 
   '@vitest/coverage-v8@1.6.0(vitest@1.6.0(happy-dom@14.12.0))':
     dependencies:

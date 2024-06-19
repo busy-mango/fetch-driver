@@ -1,6 +1,6 @@
 {
   "name": "@busymango/fetch-driver",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "type": "module",
   "description": "fetch with middlewares for the browser",
   "files": [
@@ -53,10 +53,12 @@
   },
   "dependencies": {
     "@busymango/is-esm": "^0.2.2",
+    "@busymango/utils": "0.2.2",
     "mime": "4.0.3"
   },
   "peerDependencies": {
     "@busymango/is-esm": ">=0.2.2",
+    "@busymango/utils": ">=0.2.2",
     "mime": ">=4.0.0"
   }
 }

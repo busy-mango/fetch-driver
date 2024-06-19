@@ -4,7 +4,6 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 
 import {
   isNonRawBodyInit,
-  iSearchParams,
   src2name,
   isRawTextBody,
   downloader,
@@ -150,12 +149,4 @@ describe('src2name', () => {
       src2name('file.jpg'),
     ).toEqual('file.jpg');
   });
-})
-
-describe('iSearchParams', () => {
-  it('test', () => {
-    const string = ' charset=UTF-8';
-    const source = iSearchParams([string]);
-    expect(source.get('charset')).toEqual('UTF-8');
-  })
 })

@@ -16,9 +16,10 @@ import {
   isReadableStream,
   isBufferSource,
 } from '@busymango/is-esm';
+import { iSearchParams } from '@busymango/utils';
 
 import type { DriveContextOptions } from './model';
-import { iSearchParams, isNonRawBodyInit } from './utils';
+import { isNonRawBodyInit } from './utils';
 
 export default class DriveContext<T = unknown> {
   /** the fetch src */
@@ -151,7 +152,7 @@ export default class DriveContext<T = unknown> {
 
       // get response charset
       const params = iSearchParams(fields);
-      const charset = params.get('charset');
+      const charset = params?.get('charset');
       if (isString(charset)) this.responseCharset = charset;
     }
   }

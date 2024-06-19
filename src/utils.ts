@@ -54,12 +54,6 @@ export function src2name (src: string): string {
   return path.split('/').reverse()?.[0];
 }
 
-export function iSearchParams(fields: string[]): URLSearchParams {
-  return new URLSearchParams(
-    fields.filter(e => e.includes('=')).map(e => e.trim()).join('&'),
-  );
-};
-
 export async function driveBody<T>(
   response: Response,
   context: DriveContext<T>,
