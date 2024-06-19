@@ -1,6 +1,6 @@
 {
   "name": "@busymango/fetch-driver",
-  "version": "0.1.16",
+  "version": "0.2.0",
   "type": "module",
   "description": "fetch with middlewares for the browser",
   "files": [
@@ -44,19 +44,19 @@
     "publish:pre": "pnpm build && pnpm coverage"
   },
   "devDependencies": {
-    "@types/mime": "^3.0.1",
-    "@vitest/coverage-v8": "^1.1.0",
-    "oxlint": "^0.0.22",
-    "typescript": "^5.3.3",
-    "vite": "^5.0.10",
-    "vitest": "^1.1.0"
+    "@vitest/coverage-v8": "^1.6.0",
+    "happy-dom": "^14.12.0",
+    "oxlint": "^0.4.4",
+    "typescript": "^5.4.5",
+    "vite": "^5.3.1",
+    "vitest": "^1.6.0"
   },
   "dependencies": {
-    "@busymango/is-esm": "^0.1.7",
-    "mime": "4.0.1"
+    "@busymango/is-esm": "^0.2.2",
+    "mime": "4.0.3"
   },
   "peerDependencies": {
-    "@busymango/is-esm": ">=0.1.1",
-    "mime": ">3.0.0"
+    "@busymango/is-esm": ">=0.2.2",
+    "mime": ">=4.0.0"
   }
 }

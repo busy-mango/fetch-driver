@@ -7,10 +7,10 @@ import {
   isBlob,
   isObject,
   isFinite,
-  isArrayBuffer,
-  isArrayBufferLike,
-  isArrayBufferView,
   isString,
+  isFormData,
+  isReadableStream,
+  isBufferSource,
 } from '@busymango/is-esm';
 
 import DriveContext from './context';
@@ -21,12 +21,9 @@ export function isNonRawBodyInit(source: unknown): source is Exclude<
 > {
   if (!isObject(source)) return false;
   return isBlob(source)
-    || isArrayBuffer(source)
-    || isArrayBufferLike(source)
-    || isArrayBufferView(source)
-    || source instanceof FormData
-    || source instanceof ReadableStream
-  ;
+    || isFormData(source)
+    || isBufferSource(source)
+    || isReadableStream(source);
 };
 
 export function isRawTextBody(type?: string) {
@@ -57,7 +54,7 @@ export function src2name (src: string): string {
   return path.split('/').reverse()?.[0];
 }
 
-export function toParams(fields: string[]): URLSearchParams {
+export function iSearchParams(fields: string[]): URLSearchParams {
   return new URLSearchParams(
     fields.filter(e => e.includes('=')).map(e => e.trim()).join('&'),
   );

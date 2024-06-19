@@ -1,9 +1,13 @@
-import { describe, it, expect } from 'vitest';
+// @vitest-environment happy-dom
+
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 
 import {
   isNonRawBodyInit,
-  toParams,
+  iSearchParams,
   src2name,
+  isRawTextBody,
+  downloader,
 } from '../src/utils';
 
 describe('isNonRawBodyInit', () => {
@@ -50,6 +54,72 @@ describe('isNonRawBodyInit', () => {
   });
 });
 
+describe('downloader function', () => {
+  beforeEach(() => {
+    // Create a spy on document.createElement to mock the anchor element
+    vi.spyOn(document, 'createElement').mockReturnValue(document.createElement('a'));
+  });
+
+  afterEach(() => {
+    // Restore document.createElement to its original implementation
+    vi.restoreAllMocks();
+  });
+
+  it('should create and click a hidden anchor element with download attribute', () => {
+    const mockElement = document.createElement('a');
+    const href = 'https://vitest.dev/logo.svg';
+    const download = 'file.txt';
+
+    // Mock necessary properties and methods
+    mockElement.style.display = 'none';
+    mockElement.download = download;
+    mockElement.href = href;
+
+    // Mock document.body.appendChild and document.body.removeChild methods
+    const appendChildSpy = vi.spyOn(document.body, 'appendChild').mockImplementation(e => e);
+    const removeChildSpy = vi.spyOn(document.body, 'removeChild').mockImplementation(e => e);
+
+    // Spy on click method of the mock element
+    const clickSpy = vi.spyOn(mockElement, 'click').mockImplementation(() => {});
+
+    // Call the downloader function
+    downloader(href, download);
+
+    // Assert expectations
+    expect(document.createElement).toHaveBeenCalledWith('a');
+    expect(mockElement.style.display).toBe('none');
+    expect(mockElement.download).toBe(download);
+    expect(mockElement.href).toBe(href);
+    expect(appendChildSpy).toHaveBeenCalledWith(mockElement);
+    expect(clickSpy).toHaveBeenCalled();
+    expect(removeChildSpy).toHaveBeenCalledWith(mockElement);
+  });
+});
+
+describe('isRawTextBody function', () => {
+  it('should return true for supported types', () => {
+    expect(isRawTextBody('css')).toBe(true);
+    expect(isRawTextBody('xml')).toBe(true);
+    expect(isRawTextBody('html')).toBe(true);
+    expect(isRawTextBody('plain')).toBe(true);
+    expect(isRawTextBody('richtext')).toBe(true);
+    expect(isRawTextBody('javascript')).toBe(true);
+  });
+
+  it('should return false for unsupported types', () => {
+    expect(isRawTextBody('json')).toBe(false);
+    expect(isRawTextBody('pdf')).toBe(false);
+    expect(isRawTextBody('image/jpeg')).toBe(false);
+    expect(isRawTextBody('application/octet-stream')).toBe(false);
+    expect(isRawTextBody('text')).toBe(false);
+    expect(isRawTextBody(undefined)).toBe(false);
+  });
+
+  it('should return false when type is not provided', () => {
+    expect(isRawTextBody()).toBe(false);
+  });
+});
+
 describe('src2name', () => {
   it('for a source string without query parameters', () => {
     expect(
@@ -82,10 +152,10 @@ describe('src2name', () => {
   });
 })
 
-describe('fields2search', () => {
+describe('iSearchParams', () => {
   it('test', () => {
     const string = ' charset=UTF-8';
-    const source = toParams([string]);
+    const source = iSearchParams([string]);
     expect(source.get('charset')).toEqual('UTF-8');
   })
 })

@@ -12,11 +12,24 @@ describe('DriveContext', () => {
   });
 
   it('should initialize body correctly', () => {
-    const data = { key: 'value' };
-    const context = new DriveContext('/api', data);
-    context.init();
-    expect(context.options.body).toStrictEqual(JSON.stringify(data));
-    expect(context.options.headers.get('Content-Type')).toStrictEqual('application/json');
+    const data1 = { key: 'value' };
+    const context1 = new DriveContext('/api', data1);
+    context1.init();
+    expect(context1.options.body).toStrictEqual(JSON.stringify(data1));
+    expect(context1.options.headers.get('Content-Type')).toStrictEqual('application/json');
+
+    const data2 = new FormData();
+    const context2 = new DriveContext('/api', data2);
+    context2.init();
+    expect(context2.options.body).toStrictEqual(data2);
+    expect(context2.options.headers.get('Content-Type')).toStrictEqual('multipart/form-data');
+
+
+    const data3 = new Uint16Array([12]);
+    const context3 = new DriveContext('/api', data3);
+    context3.init();
+    expect(context3.options.body).toStrictEqual(data3);
+    expect(context3.options.headers.get('Content-Type')).toStrictEqual('application/octet-stream');
   });
 
   it('should initialize method correctly', () => {

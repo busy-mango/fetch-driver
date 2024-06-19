@@ -36,7 +36,7 @@ describe('Successful GET request', () => {
 
   it('should parse json data', async () => {
     const data = new URLSearchParams({ test: 'test' });
-    const res = await drive<CatFactModel>(api, data);
+    const res = await drive.get<CatFactModel>(api, data);
     expect(res.fact?.length).toBe(res.length);
   });
 

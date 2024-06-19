@@ -2,7 +2,7 @@
  * @author mango
  * @description fetch context
  */
-import mime from 'mime/lite';
+import mime from 'mime';
 
 import {
   isNil,
@@ -12,10 +12,13 @@ import {
   isObject,
   isString,
   isURLSearchParams,
+  isFormData,
+  isReadableStream,
+  isBufferSource,
 } from '@busymango/is-esm';
 
 import type { DriveContextOptions } from './model';
-import { toParams, isNonRawBodyInit } from './utils';
+import { iSearchParams, isNonRawBodyInit } from './utils';
 
 export default class DriveContext<T = unknown> {
   /** the fetch src */
@@ -86,6 +89,14 @@ export default class DriveContext<T = unknown> {
       const { data } = this;
       if (isNonRawBodyInit(data)) {
         this.options.body = data;
+        if (!headers.has('Content-Type')) {
+          if (isFormData(data)) {
+            headers.set('Content-Type', 'multipart/form-data');
+          }
+          if (isReadableStream(data) || isBufferSource(data)) {
+            headers.set('Content-Type', 'application/octet-stream');
+          }
+        }
       } else if (isObject(data) && !isURLSearchParams(data)) {
         this.options.body = JSON.stringify(data);
         if (!headers.has('Content-Type')) {
@@ -139,7 +150,7 @@ export default class DriveContext<T = unknown> {
       }
 
       // get response charset
-      const params = toParams(fields);
+      const params = iSearchParams(fields);
       const charset = params.get('charset');
       if (isString(charset)) this.responseCharset = charset;
     }
