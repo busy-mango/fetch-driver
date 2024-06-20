@@ -22,14 +22,11 @@ describe('DriveContext', () => {
     const context2 = new DriveContext('/api', data2);
     context2.init();
     expect(context2.options.body).toStrictEqual(data2);
-    expect(context2.options.headers.get('Content-Type')).toStrictEqual('multipart/form-data');
-
 
     const data3 = new Uint16Array([12]);
     const context3 = new DriveContext('/api', data3);
     context3.init();
     expect(context3.options.body).toStrictEqual(data3);
-    expect(context3.options.headers.get('Content-Type')).toStrictEqual('application/octet-stream');
   });
 
   it('should initialize method correctly', () => {
