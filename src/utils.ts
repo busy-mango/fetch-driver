@@ -5,12 +5,11 @@
 
 import {
   isBlob,
-  isObject,
   isFinite,
   isString,
   isFormData,
-  isReadableStream,
   isBufferSource,
+  isReadableStream,
 } from '@busymango/is-esm';
 
 import DriveContext from './context';
@@ -19,7 +18,6 @@ import { ReceivedFunc } from './model';
 export function isNonRawBodyInit(source: unknown): source is Exclude<
   BodyInit, string | URLSearchParams
 > {
-  if (!isObject(source)) return false;
   return isBlob(source)
     || isFormData(source)
     || isBufferSource(source)

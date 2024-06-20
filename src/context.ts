@@ -6,15 +6,12 @@ import mime from 'mime';
 
 import {
   isNil,
-  isFinite,
-  isNonEmptyString, 
-  isFunction,
-  isObject,
   isString,
+  isFinite,
+  isFunction,
+  isPlainObject,
+  isNonEmptyString, 
   isURLSearchParams,
-  isFormData,
-  isReadableStream,
-  isBufferSource,
 } from '@busymango/is-esm';
 import { iSearchParams } from '@busymango/utils';
 
@@ -71,7 +68,7 @@ export default class DriveContext<T = unknown> {
   }
 
   /** init request src */
-  private initAPI = () => {
+  private initApi = () => {
     const { api, data } = this;
     if (isURLSearchParams(data)) {
       const arr = api.split('?');
@@ -88,21 +85,15 @@ export default class DriveContext<T = unknown> {
     
     if (isNil(body)) {
       const { data } = this;
+      if (isPlainObject(data)) {
+        const key = 'Content-Type';
+        const value = 'application/json';
+
+        this.options.body = JSON.stringify(data);
+        !headers.has(key) && headers.set(key, value)
+      }
       if (isNonRawBodyInit(data)) {
         this.options.body = data;
-        if (!headers.has('Content-Type')) {
-          if (isFormData(data)) {
-            headers.set('Content-Type', 'multipart/form-data');
-          }
-          if (isReadableStream(data) || isBufferSource(data)) {
-            headers.set('Content-Type', 'application/octet-stream');
-          }
-        }
-      } else if (isObject(data) && !isURLSearchParams(data)) {
-        this.options.body = JSON.stringify(data);
-        if (!headers.has('Content-Type')) {
-          headers.set('Content-Type', 'application/json');
-        }
       }
     }
   }
@@ -117,7 +108,7 @@ export default class DriveContext<T = unknown> {
 
   /** init context */
   public init = () => {
-    this.initAPI();
+    this.initApi();
     this.initBody();
     this.initMethod();
   }
