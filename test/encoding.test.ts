@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import FetchDriver from "../src/fetch";
 
 describe("external encoding", () => {
-  const { drive, request } = new FetchDriver([]);
+  const { drive, request } = new FetchDriver();
 
   describe("data uri", () => {
     it("should accept base64-encoded gif data uri", async () => {
