@@ -1,10 +1,8 @@
-import FetchDriver from '@busymango/fetch-driver';
+import FetchDriver from "@busymango/fetch-driver";
 
-import disposition from './middlewares/disposition';
+import disposition from "./middlewares/disposition";
 
-const { request, drive } = new FetchDriver([
-  disposition,
-]);
+const { request, drive } = new FetchDriver([disposition]);
 
 export { drive, request };
 

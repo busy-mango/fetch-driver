@@ -3,20 +3,20 @@
  * @description fetch core
  */
 
-import { isObject } from '@busymango/is-esm';
+import { isObject } from "@busymango/is-esm";
 
+import { compose } from "./compose";
+import DriveContext from "./context";
 import type {
   DriveFunc,
-  DriveOptions,
   DriveMiddleware,
-  FirstParam,
-  FetchContext,
-  Middleware,
+  DriveOptions,
   ExtraOptions,
-} from './model';
-import { compose } from './compose';
-import DriveContext from './context';
-import { driveBody } from './utils';
+  FetchContext,
+  FirstParam,
+  Middleware,
+} from "./model";
+import { driveBody } from "./utils";
 
 function over<T>(
   first: FirstParam<T>,
@@ -29,7 +29,16 @@ function over<T>(
 
 type DriveParams<T> = Parameters<typeof over<T>>;
 
-const methods = ['GET', 'PUT', 'POST', 'HEAD', 'TRACE', 'DELETE', 'CONNECT', 'OPTIONS'] as const;
+const methods = [
+  "GET",
+  "PUT",
+  "POST",
+  "HEAD",
+  "TRACE",
+  "DELETE",
+  "CONNECT",
+  "OPTIONS",
+] as const;
 
 export default class FetchDriver {
   private middleware: DriveMiddleware[];
@@ -39,25 +48,24 @@ export default class FetchDriver {
 
     methods.forEach((method) => {
       const name = method.toLowerCase() as Lowercase<typeof method>;
-      this.drive[name] = async<T>(...args: DriveParams<T>) => (
-        await this.request({ ...over(...args), method })
-      ).body
+      this.drive[name] = async <T>(...args: DriveParams<T>) =>
+        (await this.request({ ...over(...args), method })).body;
     });
   }
 
-  public request = async<T>({
+  public request = async <T>({
     api,
     use,
     data,
-    parse,
     timeout,
     onReceived,
+    parse,
     ...init
   }: DriveOptions<T>) => {
     const context = new DriveContext<T>(api, data, init);
 
     const composed = compose<DriveContext>(
-      use as Middleware<DriveContext>[] ?? this.middleware,
+      (use as Middleware<DriveContext>[]) ?? this.middleware,
     );
 
     await composed(context, async () => {
@@ -70,17 +78,13 @@ export default class FetchDriver {
       context.response = response;
       context.decodeHeader();
 
-      await (parse ?? driveBody)(
-        response,
-        context,
-        { onReceived },
-      );
+      await (parse ?? driveBody)(response, context, { onReceived });
     });
 
     return context as FetchContext<T>;
-  }
+  };
 
-  public drive = (async<T>(...args: DriveParams<T>) => {
+  public drive = (async <T>(...args: DriveParams<T>) => {
     return (await this.request(over(...args))).body;
   }) as DriveFunc;
 }

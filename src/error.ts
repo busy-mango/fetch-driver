@@ -3,7 +3,7 @@
  * @description fetch error
  */
 
-import DriveContext from './context';
+import type DriveContext from "./context";
 
 export interface FetchErrorParams<T> {
   code?: T;
@@ -14,17 +14,14 @@ export interface FetchErrorParams<T> {
 export class FetchError<T = number> extends Error {
   public code?: T;
 
-	public context?: DriveContext;
-	
-	constructor(
-    message: string,
-    params: FetchErrorParams<T>,
-  ) {
+  public context?: DriveContext;
+
+  constructor(message: string, params: FetchErrorParams<T>) {
     super(message, {
-      cause: params?.cause
+      cause: params?.cause,
     });
 
     this.code = params?.code;
-    this.context = params?.context;    
-	}
+    this.context = params?.context;
+  }
 }

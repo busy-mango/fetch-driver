@@ -3,11 +3,9 @@
  * @description middlewares compose
  */
 
-import type { Middleware, Next } from './model';
+import type { Middleware, Next } from "./model";
 
-export function compose<T>(
-  middlewares: Middleware<T>[]
-): Middleware<T> {
+export function compose<T>(middlewares: Middleware<T>[]): Middleware<T> {
   return function (context: T, next?: Next) {
     const closure = { offset: -1 };
 
@@ -27,4 +25,4 @@ export function compose<T>(
 
     return dispatch(0);
   };
-};
+}

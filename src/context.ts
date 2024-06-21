@@ -2,21 +2,21 @@
  * @author mango
  * @description fetch context
  */
-import mime from 'mime';
+import mime from "mime";
 
 import {
-  isNil,
-  isString,
   isFinite,
   isFunction,
+  isNil,
+  isNonEmptyString,
   isPlainObject,
-  isNonEmptyString, 
+  isString,
   isURLSearchParams,
-} from '@busymango/is-esm';
-import { iSearchParams } from '@busymango/utils';
+} from "@busymango/is-esm";
+import { iSearchParams } from "@busymango/utils";
 
-import type { DriveContextOptions } from './model';
-import { isNonRawBodyInit } from './utils';
+import type { DriveContextOptions } from "./model";
+import { isNonRawBodyInit } from "./utils";
 
 export default class DriveContext<T = unknown> {
   /** the fetch src */
@@ -48,16 +48,9 @@ export default class DriveContext<T = unknown> {
 
   /** current time response received chunks */
   public receivedChunk?: Uint8Array;
-  
-  constructor (
-    api: string,
-    data?: object,
-    params?: RequestInit,
-  ) {
-    const {
-      headers,
-      ...options
-    } = params ?? {};
+
+  constructor(api: string, data?: object, params?: RequestInit) {
+    const { headers, ...options } = params ?? {};
 
     this.api = api;
     this.data = data;
@@ -71,47 +64,47 @@ export default class DriveContext<T = unknown> {
   private initApi = () => {
     const { api, data } = this;
     if (isURLSearchParams(data)) {
-      const arr = api.split('?');
+      const arr = api.split("?");
       const [path, ...searchs] = arr;
-      const search = searchs.join('?');
+      const search = searchs.join("?");
       const queries = `${data.toString()}&${search}`;
       this.api = `${path}?${new URLSearchParams(queries).toString()}`;
     }
-  } 
+  };
 
   /** init request body */
   private initBody = () => {
     const { body, headers } = this.options;
-    
+
     if (isNil(body)) {
       const { data } = this;
       if (isPlainObject(data)) {
-        const key = 'Content-Type';
-        const value = 'application/json';
+        const key = "Content-Type";
+        const value = "application/json";
 
         this.options.body = JSON.stringify(data);
-        !headers.has(key) && headers.set(key, value)
+        !headers.has(key) && headers.set(key, value);
       }
       if (isNonRawBodyInit(data)) {
         this.options.body = data;
       }
     }
-  }
+  };
 
   /** init method */
   private initMethod = () => {
     if (!this.options.method) {
       const { body } = this.options;
-      this.options.method = isNil(body) ? 'GET' : 'POST';
+      this.options.method = isNil(body) ? "GET" : "POST";
     }
-  }
+  };
 
   /** init context */
   public init = () => {
     this.initApi();
     this.initBody();
     this.initMethod();
-  }
+  };
 
   /** use `AbortController` abort cur fetch when timeout */
   public initAbort = (timeout?: number) => {
@@ -121,16 +114,16 @@ export default class DriveContext<T = unknown> {
       this.options.signal = controller.signal;
       setTimeout(() => controller.abort(), timeout);
     }
-  }
+  };
 
   /** get Content-Type & charset by response header before response */
   public decodeHeader = () => {
     const { response } = this;
     const { headers } = response!;
-    const type = headers.get('Content-Type');
+    const type = headers.get("Content-Type");
 
     if (isNonEmptyString(type)) {
-      const fields = type.split(';');
+      const fields = type.split(";");
 
       // get response content type
       for (const iterator of fields) {
@@ -138,13 +131,13 @@ export default class DriveContext<T = unknown> {
         const extension = mime.getExtension(iterator);
         if (isString(extension) && !isString(responseType)) {
           this.responseType = extension;
-        };
+        }
       }
 
       // get response charset
       const params = iSearchParams(fields);
-      const charset = params?.get('charset');
+      const charset = params?.get("charset");
       if (isString(charset)) this.responseCharset = charset;
     }
-  }
+  };
 }

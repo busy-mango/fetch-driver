@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>86/86</span>
+                <span class='fraction'>90/90</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>86/86</span>
+                <span class='fraction'>90/90</span>
             </div>
         
             
@@ -149,7 +149,11 @@
 <a name='L84'></a><a href='#L84'>84</a>
 <a name='L85'></a><a href='#L85'>85</a>
 <a name='L86'></a><a href='#L86'>86</a>
-<a name='L87'></a><a href='#L87'>87</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L87'></a><a href='#L87'>87</a>
+<a name='L88'></a><a href='#L88'>88</a>
+<a name='L89'></a><a href='#L89'>89</a>
+<a name='L90'></a><a href='#L90'>90</a>
+<a name='L91'></a><a href='#L91'>91</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -182,6 +186,15 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
@@ -192,7 +205,6 @@
 <span class="cline-any cline-yes">16x</span>
 <span class="cline-any cline-yes">16x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
@@ -221,10 +233,6 @@
 <span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-yes">8x</span>
-<span class="cline-any cline-yes">8x</span>
-<span class="cline-any cline-yes">9x</span>
-<span class="cline-any cline-yes">9x</span>
-<span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-yes">8x</span>
@@ -240,20 +248,20 @@
  * @description fetch core
  */
 &nbsp;
-import { isObject } from '@busymango/is-esm';
+import { isObject } from "@busymango/is-esm";
 &nbsp;
+import { compose } from "./compose";
+import DriveContext from "./context";
 import type {
   DriveFunc,
-  DriveOptions,
   DriveMiddleware,
-  FirstParam,
-  FetchContext,
-  Middleware,
+  DriveOptions,
   ExtraOptions,
-} from './model';
-import { compose } from './compose';
-import DriveContext from './context';
-import { driveBody } from './utils';
+  FetchContext,
+  FirstParam,
+  Middleware,
+} from "./model";
+import { driveBody } from "./utils";
 &nbsp;
 function over&lt;T&gt;(
   first: FirstParam&lt;T&gt;,
@@ -266,7 +274,16 @@ function over&lt;T&gt;(
 &nbsp;
 type DriveParams&lt;T&gt; = Parameters&lt;typeof over&lt;T&gt;&gt;;
 &nbsp;
-const methods = ['GET', 'PUT', 'POST', 'HEAD', 'TRACE', 'DELETE', 'CONNECT', 'OPTIONS'] as const;
+const methods = [
+  "GET",
+  "PUT",
+  "POST",
+  "HEAD",
+  "TRACE",
+  "DELETE",
+  "CONNECT",
+  "OPTIONS",
+] as const;
 &nbsp;
 export default class FetchDriver {
   private middleware: DriveMiddleware[];
@@ -276,25 +293,24 @@ export default class FetchDriver {
 &nbsp;
     methods.forEach((method) =&gt; {
       const name = method.toLowerCase() as Lowercase&lt;typeof method&gt;;
-      this.drive[name] = async&lt;T&gt;(...args: DriveParams&lt;T&gt;) =&gt; (
-        await this.request({ ...over(...args), method })
-      ).body
+      this.drive[name] = async &lt;T&gt;(...args: DriveParams&lt;T&gt;) =&gt;
+        (await this.request({ ...over(...args), method })).body;
     });
   }
 &nbsp;
-  public request = async&lt;T&gt;({
+  public request = async &lt;T&gt;({
     api,
     use,
     data,
-    parse,
     timeout,
     onReceived,
+    parse,
     ...init
   }: DriveOptions&lt;T&gt;) =&gt; {
     const context = new DriveContext&lt;T&gt;(api, data, init);
 &nbsp;
     const composed = compose&lt;DriveContext&gt;(
-      use as Middleware&lt;DriveContext&gt;[] ?? this.middleware,
+      (use as Middleware&lt;DriveContext&gt;[]) ?? this.middleware,
     );
 &nbsp;
     await composed(context, async () =&gt; {
@@ -307,17 +323,13 @@ export default class FetchDriver {
       context.response = response;
       context.decodeHeader();
 &nbsp;
-      await (parse ?? driveBody)(
-        response,
-        context,
-        { onReceived },
-      );
+      await (parse ?? driveBody)(response, context, { onReceived });
     });
 &nbsp;
     return context as FetchContext&lt;T&gt;;
-  }
+  };
 &nbsp;
-  public drive = (async&lt;T&gt;(...args: DriveParams&lt;T&gt;) =&gt; {
+  public drive = (async &lt;T&gt;(...args: DriveParams&lt;T&gt;) =&gt; {
     return (await this.request(over(...args))).body;
   }) as DriveFunc;
 }
@@ -328,7 +340,7 @@ export default class FetchDriver {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-06-20T09:18:14.445Z
+                at 2024-06-21T02:11:15.638Z
             </div>
         <script src="prettify.js"></script>
         <script>

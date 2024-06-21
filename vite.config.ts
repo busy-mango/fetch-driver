@@ -43,9 +43,11 @@ export default defineConfig({
     rollupOptions: {
       external: ['mime', '@busymango/is-esm'],
       output: {
+        exports: 'named',
         name: '@busymango/fetch-driver',
         globals: {
           'mime': 'mime',
+          '@busymango/utils': '@busymango/utils',
           '@busymango/is-esm': '@busymango/is-esm',
         },
       },

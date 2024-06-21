@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">87.96% </span>
+                <span class="strong">88.88% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>117/133</span>
+                <span class='fraction'>120/135</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">87.96% </span>
+                <span class="strong">88.88% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>117/133</span>
+                <span class='fraction'>120/135</span>
             </div>
         
             
@@ -196,7 +196,9 @@
 <a name='L131'></a><a href='#L131'>131</a>
 <a name='L132'></a><a href='#L132'>132</a>
 <a name='L133'></a><a href='#L133'>133</a>
-<a name='L134'></a><a href='#L134'>134</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
+<a name='L134'></a><a href='#L134'>134</a>
+<a name='L135'></a><a href='#L135'>135</a>
+<a name='L136'></a><a href='#L136'>136</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
@@ -214,13 +216,15 @@
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">26x</span>
 <span class="cline-any cline-yes">26x</span>
 <span class="cline-any cline-yes">26x</span>
 <span class="cline-any cline-yes">26x</span>
 <span class="cline-any cline-yes">25x</span>
 <span class="cline-any cline-yes">23x</span>
 <span class="cline-any cline-yes">20x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">26x</span>
+<span class="cline-any cline-yes">26x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">14x</span>
@@ -270,6 +274,7 @@
 <span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -277,24 +282,23 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">74x</span>
-<span class="cline-any cline-yes">74x</span>
-<span class="cline-any cline-yes">74x</span>
-<span class="cline-any cline-yes">73x</span>
-<span class="cline-any cline-yes">73x</span>
-<span class="cline-any cline-yes">73x</span>
-<span class="cline-any cline-yes">73x</span>
-<span class="cline-any cline-yes">73x</span>
-<span class="cline-any cline-yes">73x</span>
-<span class="cline-any cline-yes">74x</span>
-<span class="cline-any cline-yes">74x</span>
-<span class="cline-any cline-yes">74x</span>
-<span class="cline-any cline-yes">74x</span>
-<span class="cline-any cline-yes">74x</span>
-<span class="cline-any cline-yes">74x</span>
+<span class="cline-any cline-yes">62x</span>
+<span class="cline-any cline-yes">62x</span>
+<span class="cline-any cline-yes">62x</span>
+<span class="cline-any cline-yes">61x</span>
+<span class="cline-any cline-yes">61x</span>
+<span class="cline-any cline-yes">61x</span>
+<span class="cline-any cline-yes">61x</span>
+<span class="cline-any cline-yes">61x</span>
+<span class="cline-any cline-yes">61x</span>
+<span class="cline-any cline-yes">62x</span>
+<span class="cline-any cline-yes">62x</span>
+<span class="cline-any cline-yes">62x</span>
+<span class="cline-any cline-yes">62x</span>
+<span class="cline-any cline-yes">62x</span>
+<span class="cline-any cline-yes">62x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -336,51 +340,53 @@
 &nbsp;
 import {
   isBlob,
-  isFinite,
-  isString,
-  isFormData,
   isBufferSource,
+  isFinite,
+  isFormData,
   isReadableStream,
-} from '@busymango/is-esm';
+  isString,
+} from "@busymango/is-esm";
 &nbsp;
-import DriveContext from './context';
-import { ReceivedFunc } from './model';
+import type DriveContext from "./context";
+import type { ReceivedFunc } from "./model";
 &nbsp;
-export function isNonRawBodyInit(source: unknown): source is Exclude&lt;
-  BodyInit, string | URLSearchParams
-&gt; {
-  return isBlob(source)
-    || isFormData(source)
-    || isBufferSource(source)
-    || isReadableStream(source);
-};
+export function isNonRawBodyInit(
+  source: unknown,
+): source is Exclude&lt;BodyInit, string | URLSearchParams&gt; {
+  return (
+    isBlob(source) ||
+    isFormData(source) ||
+    isBufferSource(source) ||
+    isReadableStream(source)
+  );
+}
 &nbsp;
 export function isRawTextBody(type?: string) {
   switch (type) {
-    case 'css':
-    case 'xml':
-    case 'html':
-    case 'plain':
-    case 'richtext':
-    case 'javascript':
-    return true;
+    case "css":
+    case "xml":
+    case "html":
+    case "plain":
+    case "richtext":
+    case "javascript":
+      return true;
   }
   return false;
 }
 &nbsp;
 export function downloader(href: string, download: string) {
-  const element = document.createElement('a');
+  const element = document.createElement("a");
   document.body.appendChild(element);
-  element.style.display = 'none';
+  element.style.display = "none";
   element.download = download;
   element.href = href;
   element.click();
   document.body.removeChild(element);
 }
 &nbsp;
-export function src2name (src: string): string {
-  const [path] = src.split('?');
-  return path.split('/').reverse()?.[0];
+export function src2name(src: string): string {
+  const [path] = src.split("?");
+  return path.split("/").reverse()?.[0];
 }
 &nbsp;
 export async function driveBody&lt;T&gt;(
@@ -397,11 +403,12 @@ export async function driveBody&lt;T&gt;(
   const { responseCharset, responseType } = context;
 &nbsp;
   if (ok) {
-    const size = Number(headers.get('Content-Length'));
+    const size = Number(headers.get("Content-Length"));
     const isShard = body &amp;&amp; isFinite(size) &amp;&amp; onReceived;
-    const disposition = headers.get('Content-Disposition');
-    const isAttchment = isString(disposition<span class="branch-0 cbranch-no" title="branch not covered" >) &amp;&amp; disposition.includes('attachment');</span>
-    
+    const disposition = headers.get("Content-Disposition");
+    const isAttchment =
+      isString(disposition<span class="branch-0 cbranch-no" title="branch not covered" >) &amp;&amp; disposition.includes("attachment");</span>
+&nbsp;
     if (isShard) {
       context.receivedBytes = 0;
       context.receivedChunk = new Uint8Array(0);
@@ -423,18 +430,17 @@ export async function driveBody&lt;T&gt;(
         context.receivedDone = done;
         const { receivedBytes } = context;
         const denominator = size &gt; 0 ? <span class="branch-0 cbranch-no" title="branch not covered" >size : receivedBytes;</span>
-        onReceived(100 * receivedBytes / denominator, context);
+        onReceived((100 * receivedBytes) / denominator, context);
       }
 &nbsp;
       if (isAttchment) <span class="branch-0 cbranch-no" title="branch not covered" >{</span>
-<span class="cstat-no" title="statement not covered" >        context.body = new Blob(</span>
-<span class="cstat-no" title="statement not covered" >          [context.receivedChunk],</span>
-<span class="cstat-no" title="statement not covered" >          { type: 'application/octet-stream' },</span>
-<span class="cstat-no" title="statement not covered" >        ) as T;</span>
+<span class="cstat-no" title="statement not covered" >        context.body = new Blob([context.receivedChunk], {</span>
+<span class="cstat-no" title="statement not covered" >          type: "application/octet-stream",</span>
+<span class="cstat-no" title="statement not covered" >        }) as T;</span>
 <span class="cstat-no" title="statement not covered" >        return;</span>
 <span class="cstat-no" title="statement not covered" >      }</span>
 &nbsp;
-      if (responseType === 'json') <span class="branch-0 cbranch-no" title="branch not covered" >{</span>
+      if (responseType === "json") <span class="branch-0 cbranch-no" title="branch not covered" >{</span>
 <span class="cstat-no" title="statement not covered" >        const json = decoder.decode(context.receivedChunk);</span>
 <span class="cstat-no" title="statement not covered" >        context.body = JSON.parse(json) as T;</span>
 <span class="cstat-no" title="statement not covered" >        return;</span>
@@ -445,12 +451,12 @@ export async function driveBody&lt;T&gt;(
 <span class="cstat-no" title="statement not covered" >        return;</span>
 <span class="cstat-no" title="statement not covered" >      }</span>
 &nbsp;
-      if (responseType === 'txt') {
+      if (responseType === "txt") {
         context.body = (await response.text()) as T;
         return;
       }
 &nbsp;
-      if (responseType === 'json') {
+      if (responseType === "json") {
         context.body = (await response.json()) as T;
         return;
       }
@@ -469,7 +475,7 @@ export async function driveBody&lt;T&gt;(
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-06-20T09:18:14.445Z
+                at 2024-06-21T02:11:15.638Z
             </div>
         <script src="prettify.js"></script>
         <script>
