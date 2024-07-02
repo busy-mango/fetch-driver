@@ -31,6 +31,17 @@ describe("DriveContext", () => {
     expect(context3.options.body).toStrictEqual(data3);
   });
 
+  it("should stringfy array data", () => {
+    const data = [1, 2, 3];
+    const context = new DriveContext("/api", data);
+    context.init();
+    expect(context.options.method).toStrictEqual("POST");
+    expect(context.options.body).toStrictEqual(JSON.stringify(data));
+    expect(context.options.headers.get("Content-Type")).toStrictEqual(
+      "application/json",
+    );
+  });
+
   it("should initialize method correctly", () => {
     const context1 = new DriveContext("/api");
     context1.init();

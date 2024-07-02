@@ -5,6 +5,7 @@
 import mime from "mime";
 
 import {
+  isArray,
   isFinite,
   isFunction,
   isNil,
@@ -78,15 +79,15 @@ export default class DriveContext<T = unknown> {
 
     if (isNil(body)) {
       const { data } = this;
-      if (isPlainObject(data)) {
+      if (isNonRawBodyInit(data)) {
+        this.options.body = data;
+      }
+      if (isArray(data) || isPlainObject(data)) {
         const key = "Content-Type";
         const value = "application/json";
 
         this.options.body = JSON.stringify(data);
         !headers.has(key) && headers.set(key, value);
-      }
-      if (isNonRawBodyInit(data)) {
-        this.options.body = data;
       }
     }
   };
