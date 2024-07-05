@@ -9,7 +9,6 @@ import {
   isFinite,
   isFormData,
   isReadableStream,
-  isString,
 } from "@busymango/is-esm";
 
 import type DriveContext from "./context";
@@ -67,12 +66,13 @@ export async function driveBody<T>(
 
   const { responseCharset, responseType } = context;
 
+  const disposition = headers.get("Content-Disposition");
+
+  const isAttchment = disposition?.includes("attachment");
+
   if (ok) {
     const size = Number(headers.get("Content-Length"));
     const isShard = body && isFinite(size) && onReceived;
-    const disposition = headers.get("Content-Disposition");
-    const isAttchment =
-      isString(disposition) && disposition.includes("attachment");
 
     if (isShard) {
       context.receivedBytes = 0;
@@ -110,26 +110,26 @@ export async function driveBody<T>(
         context.body = JSON.parse(json) as T;
         return;
       }
-    } else {
-      if (isAttchment) {
-        context.body = (await response.blob()) as T;
-        return;
-      }
-
-      if (responseType === "txt") {
-        context.body = (await response.text()) as T;
-        return;
-      }
-
-      if (responseType === "json") {
-        context.body = (await response.json()) as T;
-        return;
-      }
-
-      if (isRawTextBody(responseType ?? undefined)) {
-        context.body = (await response.text()) as T;
-        return;
-      }
     }
+  }
+
+  if (isAttchment) {
+    context.body = (await response.blob()) as T;
+    return;
+  }
+
+  if (responseType === "txt") {
+    context.body = (await response.text()) as T;
+    return;
+  }
+
+  if (responseType === "json") {
+    context.body = (await response.json()) as T;
+    return;
+  }
+
+  if (isRawTextBody(responseType ?? undefined)) {
+    context.body = (await response.text()) as T;
+    return;
   }
 }
