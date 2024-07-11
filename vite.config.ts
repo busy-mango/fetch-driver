@@ -44,12 +44,7 @@ export default defineConfig({
       external: ['mime', '@busymango/is-esm', '@busymango/utils'],
       output: {
         exports: 'named',
-        name: '@busymango/fetch-driver',
-        globals: {
-          'mime': 'mime',
-          '@busymango/utils': '@busymango/utils',
-          '@busymango/is-esm': '@busymango/is-esm',
-        },
+        name: '@busymango/fetch-driver'
       },
     },
   },
