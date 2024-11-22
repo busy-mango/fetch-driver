@@ -57,7 +57,7 @@ describe("Successful GET request", () => {
 
     await drive({
       api: "https://www.api-football.com/public/doc/openapi.yaml",
-      onReceived: (cur) => {
+      onReceived: ({ percentage: cur }) => {
         const { percentage: pre } = current;
         expect(cur >= pre && cur <= 100).toBeTruthy();
         current.percentage = Number(cur.toFixed(2));

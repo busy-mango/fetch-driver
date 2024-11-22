@@ -64,6 +64,7 @@ export default class DriveContext<T = unknown> {
   /** init request src */
   private initApi = () => {
     const { api, data } = this;
+    // TODO api 为 null报错
     if (isURLSearchParams(data)) {
       const arr = api.split("?");
       const [path, ...searchs] = arr;

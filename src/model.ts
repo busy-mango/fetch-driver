@@ -22,7 +22,14 @@ export type DriveContextOptions = {
 } & Omit<RequestInit, "headers">;
 
 export interface ReceivedFunc<T> {
-  (percentage: number, context: DriveContext<T>): void;
+  (params: {
+    done: boolean;
+    percentage: number;
+    decoder: TextDecoder;
+    context: DriveContext<T>;
+    reader: ReadableStreamDefaultReader<Uint8Array>;
+    value?: Uint8Array;
+  }): void;
 }
 
 export interface BodyParseFunc<T> {

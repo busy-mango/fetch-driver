@@ -83,33 +83,34 @@ export async function driveBody<T>(
 
       while (!context.receivedDone) {
         const { done, value } = await reader.read();
+        if (value) context.receivedBytes += value.length;
 
-        if (value) {
-          const { receivedChunk } = context;
-          context.receivedBytes += value.length;
-          context.receivedChunk = new Uint8Array(context.receivedBytes);
-          context.receivedChunk.set(receivedChunk);
-          context.receivedChunk.set(value, receivedChunk.length);
-        }
+        // {
+        //   const { receivedChunk } = context;
+        //   context.receivedChunk = new Uint8Array(context.receivedBytes);
+        //   context.receivedChunk.set(receivedChunk);
+        //   context.receivedChunk.set(value, receivedChunk.length);
+        // }
 
         context.receivedDone = done;
         const { receivedBytes } = context;
         const denominator = size > 0 ? size : receivedBytes;
-        onReceived((100 * receivedBytes) / denominator, context);
+        const percentage = (100 * receivedBytes) / denominator;
+        onReceived({ context, percentage, done, value, reader, decoder });
       }
 
-      if (isAttchment) {
-        context.body = new Blob([context.receivedChunk], {
-          type: "application/octet-stream",
-        }) as T;
-        return;
-      }
+      // if (isAttchment) {
+      //   context.body = new Blob([context.receivedChunk], {
+      //     type: "application/octet-stream",
+      //   }) as T;
+      // }
 
-      if (responseType === "json") {
-        const json = decoder.decode(context.receivedChunk);
-        context.body = JSON.parse(json) as T;
-        return;
-      }
+      // if (responseType === "json") {
+      //   const json = decoder.decode(context.receivedChunk);
+      //   context.body = JSON.parse(json) as T;
+      // }
+
+      return;
     }
   }
 
