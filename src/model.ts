@@ -7,6 +7,11 @@ import type DriveContext from "./context";
 // middleware next func
 export type Next = () => Promise<void>;
 
+export abstract class DriveReport {
+  // 抽象方法（必须由派生类实现）
+  abstract curl(query: string, params: RequestInit): void;
+}
+
 // base middleware
 export type Middleware<T> = (context: T, next: Next) => Promise<void>;
 
@@ -21,11 +26,11 @@ export type DriveContextOptions = {
   headers: Headers;
 } & Omit<RequestInit, "headers">;
 
-export interface ReceivedFunc<T> {
+export interface ReceiverFunc<T> {
   (params: {
+    size: number;
     done: boolean;
     percentage: number;
-    decoder: TextDecoder;
     context: DriveContext<T>;
     reader: ReadableStreamDefaultReader<Uint8Array>;
     value?: Uint8Array;
@@ -37,7 +42,7 @@ export interface BodyParseFunc<T> {
     response: Response,
     context: DriveContext<T>,
     extra?: {
-      onReceived?: ReceivedFunc<T>;
+      receiver?: ReceiverFunc<T>;
     },
   ): Promise<void>;
 }
@@ -48,7 +53,7 @@ export type ExtraOptions<T> = {
   /** use extra middleware in current fetch */
   use?: DriveMiddleware<T>[];
   /** progress callback */
-  onReceived?: ReceivedFunc<T>;
+  receiver?: ReceiverFunc<T>;
   /** body parse */
   parse?: BodyParseFunc<T>;
 };
@@ -68,10 +73,7 @@ export interface DriveMethodFunc {
   ): Promise<T>;
 }
 
-export type DriveFuncAttrs = Record<
-  "get" | "put" | "post" | "head" | "trace" | "delete" | "connect" | "options",
-  DriveMethodFunc
->;
+export type DriveFuncAttrs = Record<Lowercase<FetchMethod>, DriveMethodFunc>;
 
 // drive func overloading
 export interface DriveFunc extends DriveFuncAttrs {
@@ -92,11 +94,24 @@ export type FirstParam<T> = string | DriveOptions<T>;
 // drive context after fetch over
 export type FetchContext<T> = Required<DriveContext<T>>;
 
-export const methods: RequestInit["method"][] = [
+export type FetchMethod =
+  | "GET"
+  | "PUT"
+  | "POST"
+  | "HEAD"
+  | "TRACE"
+  | "PATCH"
+  | "DELETE"
+  | "CONNECT"
+  | "OPTIONS";
+
+export const methods: readonly FetchMethod[] = [
   "GET",
+  "PUT",
   "POST",
   "HEAD",
   "TRACE",
+  "PATCH",
   "DELETE",
   "CONNECT",
   "OPTIONS",

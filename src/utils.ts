@@ -6,13 +6,11 @@
 import {
   isBlob,
   isBufferSource,
-  isFinite,
   isFormData,
   isReadableStream,
 } from "@busymango/is-esm";
 
-import type DriveContext from "./context";
-import type { ReceivedFunc } from "./model";
+import type { DriveMiddleware } from "./model";
 
 export function isNonRawBodyInit(
   source: unknown,
@@ -53,84 +51,6 @@ export function src2name(src: string): string {
   return path.split("/").reverse()?.[0];
 }
 
-export async function driveBody<T>(
-  response: Response,
-  context: DriveContext<T>,
-  extra: {
-    onReceived?: ReceivedFunc<T>;
-  } = {},
-) {
-  const { onReceived } = extra;
-
-  const { body, ok, headers } = response;
-
-  const { responseCharset, responseType } = context;
-
-  const disposition = headers.get("Content-Disposition");
-
-  const isAttchment = disposition?.includes("attachment");
-
-  if (ok) {
-    const size = Number(headers.get("Content-Length"));
-    const isShard = body && isFinite(size) && onReceived;
-
-    if (isShard) {
-      context.receivedBytes = 0;
-      context.receivedChunk = new Uint8Array(0);
-
-      const reader = body.getReader();
-      const decoder = new TextDecoder(responseCharset);
-
-      while (!context.receivedDone) {
-        const { done, value } = await reader.read();
-        if (value) context.receivedBytes += value.length;
-
-        // {
-        //   const { receivedChunk } = context;
-        //   context.receivedChunk = new Uint8Array(context.receivedBytes);
-        //   context.receivedChunk.set(receivedChunk);
-        //   context.receivedChunk.set(value, receivedChunk.length);
-        // }
-
-        context.receivedDone = done;
-        const { receivedBytes } = context;
-        const denominator = size > 0 ? size : receivedBytes;
-        const percentage = (100 * receivedBytes) / denominator;
-        onReceived({ context, percentage, done, value, reader, decoder });
-      }
-
-      // if (isAttchment) {
-      //   context.body = new Blob([context.receivedChunk], {
-      //     type: "application/octet-stream",
-      //   }) as T;
-      // }
-
-      // if (responseType === "json") {
-      //   const json = decoder.decode(context.receivedChunk);
-      //   context.body = JSON.parse(json) as T;
-      // }
-
-      return;
-    }
-  }
-
-  if (isAttchment) {
-    context.body = (await response.blob()) as T;
-    return;
-  }
-
-  if (responseType === "txt") {
-    context.body = (await response.text()) as T;
-    return;
-  }
-
-  if (responseType === "json") {
-    context.body = (await response.json()) as T;
-    return;
-  }
-
-  if (isRawTextBody(responseType ?? undefined)) {
-    context.body = (await response.text()) as T;
-    return;
-  }
+export function createMiddleware<T = unknown>(middleware: DriveMiddleware<T>) {
+  return middleware;
 }

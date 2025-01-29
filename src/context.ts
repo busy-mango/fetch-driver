@@ -41,15 +41,6 @@ export default class DriveContext<T = unknown> {
   /** the response charset */
   public responseCharset?: string;
 
-  /** is response received done */
-  public receivedDone?: boolean;
-
-  /** the response received bytes */
-  public receivedBytes?: number;
-
-  /** current time response received chunks */
-  public receivedChunk?: Uint8Array;
-
   constructor(api: string, data?: object, params?: RequestInit) {
     const { headers, ...options } = params ?? {};
 
@@ -119,9 +110,8 @@ export default class DriveContext<T = unknown> {
   };
 
   /** get Content-Type & charset by response header before response */
-  public decodeHeader = () => {
-    const { response } = this;
-    const { headers } = response!;
+  public decodeHeader = (response: Response) => {
+    const { headers } = response;
     const type = headers.get("Content-Type");
 
     if (isNonEmptyString(type)) {

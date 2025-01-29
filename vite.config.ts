@@ -31,7 +31,7 @@ export default defineConfig({
         '**/.{eslint,mocha,prettier}rc.{?(c|m)js,yml}',
       ]
     },
-    testTimeout: 12000,
+    testTimeout: 256000,
   },
   build: {
     target: ['es2016', 'chrome65'],

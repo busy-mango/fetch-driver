@@ -11,12 +11,14 @@ import type {
   DriveFunc,
   DriveMiddleware,
   DriveOptions,
+  DriveReport,
   ExtraOptions,
   FetchContext,
   FirstParam,
   Middleware,
 } from "./model";
-import { driveBody } from "./utils";
+import { methods } from "./model";
+import { parser } from "./parser";
 
 function over<T>(
   first: FirstParam<T>,
@@ -29,21 +31,16 @@ function over<T>(
 
 type DriveParams<T> = Parameters<typeof over<T>>;
 
-const methods = [
-  "GET",
-  "PUT",
-  "POST",
-  "HEAD",
-  "TRACE",
-  "DELETE",
-  "CONNECT",
-  "OPTIONS",
-] as const;
-
 export default class FetchDriver {
+  private report?: DriveReport;
+
   private middleware: DriveMiddleware[];
 
-  constructor(middleware: DriveMiddleware[] = []) {
+  constructor(
+    middleware: DriveMiddleware[] = [],
+    params?: { report?: DriveReport },
+  ) {
+    this.report = params?.report;
     this.middleware = middleware;
 
     methods.forEach((method) => {
@@ -58,8 +55,8 @@ export default class FetchDriver {
     use,
     data,
     timeout,
-    onReceived,
-    parse,
+    receiver,
+    parse = parser(),
     ...init
   }: DriveOptions<T>) => {
     const context = new DriveContext<T>(api, data, init);
@@ -73,12 +70,13 @@ export default class FetchDriver {
       context.initAbort(timeout);
 
       const { api, options } = context;
-      const response = await fetch(api, options);
 
-      context.response = response;
-      context.decodeHeader();
+      this.report?.curl(api, options);
+      const res = await fetch(api, options);
 
-      await (parse ?? driveBody)(response, context, { onReceived });
+      context.response = res;
+      context.decodeHeader(res);
+      await parse(res, context, { receiver });
     });
 
     return context as FetchContext<T>;
