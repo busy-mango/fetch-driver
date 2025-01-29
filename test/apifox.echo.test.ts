@@ -3,9 +3,10 @@ import { describe, expect, it } from "vitest";
 import { isError } from "@busymango/is-esm";
 import { iSearchParams } from "@busymango/utils";
 
+import type DriveContext from "../src/context";
 import FetchDriver from "../src/fetch";
 import { fetch2curl } from "../src/fetch2curl";
-import { DriveReport } from "../src/model";
+import type { DriveReport } from "../src/model";
 
 const { drive } = new FetchDriver();
 
@@ -53,17 +54,42 @@ describe("HTTP 方法", () => {
         },
       };
 
-      class Report extends DriveReport {
-        curl(query: string, init: RequestInit): void {
-          terminal.echo(fetch2curl(query, init));
+      class Report implements DriveReport {
+        beforeFetch(context: DriveContext): void {
+          const { api, options } = context;
+          terminal.echo(fetch2curl(api, options));
+        }
+
+        affterFetch(context: DriveContext): void {
+          const { response } = context;
+          terminal.echo(response?.headers?.toString() ?? "");
+        }
+
+        afterParse(context: DriveContext): void {
+          const { body } = context;
+          terminal.echo(JSON.stringify(body));
         }
       }
 
-      const { drive } = new FetchDriver([], { report: new Report() });
+      const { drive } = new FetchDriver({ report: new Report() });
 
       await drive.get(iSrc("/get"));
+
       const curl = `curl "${iSrc("/get")}" -X GET`;
       expect(terminal.rows[0]).toStrictEqual(curl);
+      expect(terminal.rows[1]).toStrictEqual("");
+      expect(JSON.parse(terminal.rows[2])).toMatchObject({
+        url: "http://echo.apifox.com/get",
+        headers: {
+          Accept: "*/*",
+          "Accept-Encoding": "br, gzip, deflate",
+          "Accept-Language": "*",
+          Connection: "close",
+          Host: "echo.apifox.com",
+          "Sec-Fetch-Mode": "cors",
+          "X-From-Alb": "true",
+        },
+      });
     });
   });
 

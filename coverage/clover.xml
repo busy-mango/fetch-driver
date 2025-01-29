@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1738132598325" clover="3.2.0">
-  <project timestamp="1738132598325" name="All files">
-    <metrics statements="315" coveredstatements="307" conditionals="102" coveredconditionals="95" methods="31" coveredmethods="31" elements="448" coveredelements="433" complexity="0" loc="315" ncloc="315" packages="1" files="6" classes="6"/>
+<coverage generated="1738135731015" clover="3.2.0">
+  <project timestamp="1738135731015" name="All files">
+    <metrics statements="318" coveredstatements="310" conditionals="117" coveredconditionals="107" methods="31" coveredmethods="31" elements="466" coveredelements="448" complexity="0" loc="318" ncloc="318" packages="1" files="6" classes="6"/>
     <file name="compose.ts" path="/Users/mangosetsuna/Workspace/Busymango/fetch-driver/src/compose.ts">
       <metrics statements="16" coveredstatements="16" conditionals="6" coveredconditionals="6" methods="2" coveredmethods="2"/>
       <line num="8" count="1" type="cond" truecount="1" falsecount="0"/>
@@ -107,7 +107,7 @@
       <line num="135" count="17" type="stmt"/>
     </file>
     <file name="fetch.ts" path="/Users/mangosetsuna/Workspace/Busymango/fetch-driver/src/fetch.ts">
-      <metrics statements="57" coveredstatements="57" conditionals="14" coveredconditionals="14" methods="6" coveredmethods="6"/>
+      <metrics statements="60" coveredstatements="60" conditionals="29" coveredconditionals="26" methods="6" coveredmethods="6"/>
       <line num="6" count="1" type="stmt"/>
       <line num="8" count="1" type="stmt"/>
       <line num="9" count="1" type="stmt"/>
@@ -121,50 +121,53 @@
       <line num="28" count="6" type="cond" truecount="1" falsecount="0"/>
       <line num="29" count="3" type="stmt"/>
       <line num="30" count="3" type="stmt"/>
-      <line num="34" count="4" type="cond" truecount="1" falsecount="0"/>
-      <line num="35" count="4" type="stmt"/>
-      <line num="37" count="4" type="stmt"/>
-      <line num="39" count="4" type="cond" truecount="1" falsecount="0"/>
-      <line num="40" count="4" type="stmt"/>
+      <line num="38" count="4" type="cond" truecount="1" falsecount="0"/>
+      <line num="39" count="4" type="stmt"/>
       <line num="41" count="4" type="stmt"/>
-      <line num="42" count="4" type="stmt"/>
       <line num="43" count="4" type="cond" truecount="1" falsecount="0"/>
-      <line num="44" count="4" type="stmt"/>
-      <line num="46" count="4" type="cond" truecount="1" falsecount="0"/>
-      <line num="47" count="36" type="stmt"/>
-      <line num="48" count="36" type="cond" truecount="1" falsecount="0"/>
-      <line num="49" count="2" type="stmt"/>
-      <line num="50" count="4" type="stmt"/>
-      <line num="51" count="4" type="stmt"/>
-      <line num="53" count="4" type="cond" truecount="1" falsecount="0"/>
-      <line num="54" count="10" type="stmt"/>
-      <line num="55" count="10" type="stmt"/>
-      <line num="56" count="10" type="stmt"/>
+      <line num="44" count="4" type="cond" truecount="3" falsecount="0"/>
+      <line num="46" count="4" type="stmt"/>
+      <line num="47" count="4" type="cond" truecount="1" falsecount="0"/>
+      <line num="49" count="4" type="cond" truecount="1" falsecount="0"/>
+      <line num="50" count="36" type="stmt"/>
+      <line num="51" count="36" type="cond" truecount="1" falsecount="0"/>
+      <line num="52" count="2" type="stmt"/>
+      <line num="53" count="4" type="stmt"/>
+      <line num="54" count="4" type="stmt"/>
+      <line num="56" count="4" type="cond" truecount="1" falsecount="0"/>
       <line num="57" count="10" type="stmt"/>
       <line num="58" count="10" type="stmt"/>
       <line num="59" count="10" type="stmt"/>
       <line num="60" count="10" type="stmt"/>
       <line num="61" count="10" type="stmt"/>
       <line num="62" count="10" type="stmt"/>
+      <line num="63" count="10" type="stmt"/>
       <line num="64" count="10" type="stmt"/>
       <line num="65" count="10" type="stmt"/>
-      <line num="66" count="10" type="stmt"/>
-      <line num="68" count="10" type="cond" truecount="1" falsecount="0"/>
+      <line num="67" count="10" type="stmt"/>
+      <line num="68" count="10" type="stmt"/>
       <line num="69" count="10" type="stmt"/>
-      <line num="70" count="10" type="stmt"/>
-      <line num="72" count="10" type="stmt"/>
-      <line num="74" count="10" type="cond" truecount="1" falsecount="0"/>
-      <line num="75" count="10" type="cond" truecount="1" falsecount="0"/>
-      <line num="77" count="9" type="stmt"/>
-      <line num="78" count="9" type="stmt"/>
-      <line num="79" count="9" type="stmt"/>
+      <line num="71" count="10" type="cond" truecount="1" falsecount="0"/>
+      <line num="72" count="10" type="cond" truecount="2" falsecount="1"/>
+      <line num="73" count="10" type="stmt"/>
+      <line num="74" count="10" type="cond" truecount="2" falsecount="1"/>
+      <line num="76" count="10" type="stmt"/>
+      <line num="78" count="10" type="stmt"/>
       <line num="80" count="10" type="cond" truecount="1" falsecount="0"/>
-      <line num="82" count="9" type="stmt"/>
-      <line num="83" count="10" type="stmt"/>
-      <line num="85" count="4" type="cond" truecount="1" falsecount="0"/>
-      <line num="86" count="4" type="cond" truecount="1" falsecount="0"/>
-      <line num="87" count="4" type="stmt"/>
-      <line num="88" count="4" type="stmt"/>
+      <line num="81" count="10" type="cond" truecount="1" falsecount="0"/>
+      <line num="82" count="10" type="cond" truecount="1" falsecount="0"/>
+      <line num="84" count="10" type="stmt"/>
+      <line num="85" count="10" type="stmt"/>
+      <line num="87" count="10" type="cond" truecount="2" falsecount="1"/>
+      <line num="88" count="10" type="cond" truecount="1" falsecount="0"/>
+      <line num="89" count="10" type="cond" truecount="1" falsecount="0"/>
+      <line num="90" count="10" type="cond" truecount="1" falsecount="0"/>
+      <line num="92" count="9" type="stmt"/>
+      <line num="93" count="10" type="stmt"/>
+      <line num="95" count="4" type="cond" truecount="1" falsecount="0"/>
+      <line num="96" count="4" type="cond" truecount="1" falsecount="0"/>
+      <line num="97" count="4" type="stmt"/>
+      <line num="98" count="4" type="stmt"/>
     </file>
     <file name="fetch2curl.ts" path="/Users/mangosetsuna/Workspace/Busymango/fetch-driver/src/fetch2curl.ts">
       <metrics statements="51" coveredstatements="51" conditionals="24" coveredconditionals="23" methods="7" coveredmethods="7"/>

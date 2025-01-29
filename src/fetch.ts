@@ -3,7 +3,7 @@
  * @description fetch core
  */
 
-import { isObject } from "@busymango/is-esm";
+import { isArray, isObject } from "@busymango/is-esm";
 
 import { compose } from "./compose";
 import DriveContext from "./context";
@@ -31,17 +31,20 @@ function over<T>(
 
 type DriveParams<T> = Parameters<typeof over<T>>;
 
+type FetchDriverParams =
+  | DriveMiddleware[]
+  | { use?: DriveMiddleware[]; report?: DriveReport };
+
 export default class FetchDriver {
   private report?: DriveReport;
 
   private middleware: DriveMiddleware[];
 
-  constructor(
-    middleware: DriveMiddleware[] = [],
-    params?: { report?: DriveReport },
-  ) {
-    this.report = params?.report;
-    this.middleware = middleware;
+  constructor(opts: FetchDriverParams = {}) {
+    const params = (() => (isArray(opts) ? { use: opts } : opts))();
+
+    this.report = params.report;
+    this.middleware = params.use ?? [];
 
     methods.forEach((method) => {
       const name = method.toLowerCase() as Lowercase<typeof method>;
@@ -66,17 +69,24 @@ export default class FetchDriver {
     );
 
     await composed(context, async () => {
+      this.report?.beforeInit?.(context);
       context.init();
+      this.report?.afterInit?.(context);
+
       context.initAbort(timeout);
 
       const { api, options } = context;
 
-      this.report?.curl(api, options);
+      this.report?.beforeFetch?.(context);
       const res = await fetch(api, options);
+      this.report?.affterFetch?.(context);
 
       context.response = res;
       context.decodeHeader(res);
+
+      this.report?.beforeParse?.(context);
       await parse(res, context, { receiver });
+      this.report?.afterParse?.(context);
     });
 
     return context as FetchContext<T>;

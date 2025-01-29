@@ -8,8 +8,17 @@ import type DriveContext from "./context";
 export type Next = () => Promise<void>;
 
 export abstract class DriveReport {
-  // 抽象方法（必须由派生类实现）
-  abstract curl(query: string, params: RequestInit): void;
+  abstract beforeInit?(context: DriveContext): void;
+
+  abstract afterInit?(context: DriveContext): void;
+
+  abstract beforeFetch?(context: DriveContext): void;
+
+  abstract affterFetch?(context: DriveContext): void;
+
+  abstract beforeParse?(context: DriveContext): void;
+
+  abstract afterParse?(context: DriveContext): void;
 }
 
 // base middleware

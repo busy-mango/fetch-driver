@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>57/57</span>
+                <span class='fraction'>60/60</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">89.65% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>14/14</span>
+                <span class='fraction'>26/29</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>57/57</span>
+                <span class='fraction'>60/60</span>
             </div>
         
             
@@ -151,7 +151,17 @@
 <a name='L86'></a><a href='#L86'>86</a>
 <a name='L87'></a><a href='#L87'>87</a>
 <a name='L88'></a><a href='#L88'>88</a>
-<a name='L89'></a><a href='#L89'>89</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L89'></a><a href='#L89'>89</a>
+<a name='L90'></a><a href='#L90'>90</a>
+<a name='L91'></a><a href='#L91'>91</a>
+<a name='L92'></a><a href='#L92'>92</a>
+<a name='L93'></a><a href='#L93'>93</a>
+<a name='L94'></a><a href='#L94'>94</a>
+<a name='L95'></a><a href='#L95'>95</a>
+<a name='L96'></a><a href='#L96'>96</a>
+<a name='L97'></a><a href='#L97'>97</a>
+<a name='L98'></a><a href='#L98'>98</a>
+<a name='L99'></a><a href='#L99'>99</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -184,6 +194,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -191,8 +205,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -221,15 +234,22 @@
 <span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">9x</span>
-<span class="cline-any cline-yes">9x</span>
-<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">9x</span>
@@ -244,7 +264,7 @@
  * @description fetch core
  */
 &nbsp;
-import { isObject } from "@busymango/is-esm";
+import { isArray, isObject } from "@busymango/is-esm";
 &nbsp;
 import { compose } from "./compose";
 import DriveContext from "./context";
@@ -272,17 +292,20 @@ function over&lt;T&gt;(
 &nbsp;
 type DriveParams&lt;T&gt; = Parameters&lt;typeof over&lt;T&gt;&gt;;
 &nbsp;
+type FetchDriverParams =
+  | DriveMiddleware[]
+  | { use?: DriveMiddleware[]; report?: DriveReport };
+&nbsp;
 export default class FetchDriver {
   private report?: DriveReport;
 &nbsp;
   private middleware: DriveMiddleware[];
 &nbsp;
-  constructor(
-    middleware: DriveMiddleware[] = [],
-    params?: { report?: DriveReport },
-  ) {
-    this.report = params?.report;
-    this.middleware = middleware;
+  constructor(opts: FetchDriverParams = {}) {
+    const params = (() =&gt; (isArray(opts) ? { use: opts } : opts))();
+&nbsp;
+    this.report = params.report;
+    this.middleware = params.use ?? [];
 &nbsp;
     methods.forEach((method) =&gt; {
       const name = method.toLowerCase() as Lowercase&lt;typeof method&gt;;
@@ -307,17 +330,24 @@ export default class FetchDriver {
     );
 &nbsp;
     await composed(context, async () =&gt; {
+      this.report?.<span class="branch-0 cbranch-no" title="branch not covered" >beforeInit?.(context);</span>
       context.init();
+      this.report?.<span class="branch-0 cbranch-no" title="branch not covered" >afterInit?.(context);</span>
+&nbsp;
       context.initAbort(timeout);
 &nbsp;
       const { api, options } = context;
 &nbsp;
-      this.report?.curl(api, options);
+      this.report?.beforeFetch?.(context);
       const res = await fetch(api, options);
+      this.report?.affterFetch?.(context);
 &nbsp;
       context.response = res;
       context.decodeHeader(res);
+&nbsp;
+      this.report?.<span class="branch-0 cbranch-no" title="branch not covered" >beforeParse?.(context);</span>
       await parse(res, context, { receiver });
+      this.report?.afterParse?.(context);
     });
 &nbsp;
     return context as FetchContext&lt;T&gt;;
@@ -334,7 +364,7 @@ export default class FetchDriver {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-01-29T06:36:38.314Z
+                at 2025-01-29T07:28:51.000Z
             </div>
         <script src="prettify.js"></script>
         <script>
